@@ -17,4 +17,9 @@ const getAllOrdersInDateRange = async (startDate, endDate) => {
   return ordersInDateRange;
 };
 
+const getMonthlySales = async () => {
+  const monthlySales = await orders.aggregate([{ $group: { _id: { $month: "$createdAt" }, total: { $sum: "$amount" } } }, { $sort: { _id: 1 } }]);
+  return monthlySales;
+};
+
 module.exports = { getMostSoldCars, getAllOrdersInDateRange };

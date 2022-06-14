@@ -3,12 +3,10 @@ const carService = require("../services/carService");
 const { carValidationSchema } = require("../validation/validationsSchema");
 const validateSchema = require("../validation/validation");
 const { verifyAuthAdmin } = require("../validation/tokenVerify");
-router.get("/all", async (req, res) => {
+router.get("/", async (req, res) => {
   const qType = req.query.type;
-  console.log(qType);
   if (qType) {
     const result = await carService.getByType(qType);
-    console.log(result);
     res.status(200).json(result);
     return;
   }

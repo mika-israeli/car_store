@@ -47,6 +47,9 @@ const service = (model) => {
    * @returns
    */
   const getByField = async (field, value) => {
+    field.toLowerCase();
+    value.toLowerCase();
+    console.log(field, value);
     return await model.find({ [field]: value });
   };
   return { getAll, getById, add, update, remove, getByField };
