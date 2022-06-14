@@ -1,0 +1,7 @@
+{
+  "swaggerDefinition": {
+    "title": "moongo-swagger-test",
+    "version": "1.0.0"
+  },
+  "apis": ["./server.js"]
+}
