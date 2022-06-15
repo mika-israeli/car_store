@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
-
+import CarFeed from "./components/CarFeed";
+import { useState, useEffect } from "react";
+//import data from "./mockData";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5000/cars")
+      .then((res) => res.json())
+      .then((res) => setdata(res))
+      .catch((err) => console.log(err));
+  }, []);
+  return data && <CarFeed items={data} />;
 }
 
 export default App;
