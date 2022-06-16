@@ -7,12 +7,11 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-
+import { palette } from "@mui/system";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-
+import { tableCellClasses } from "@mui/material/TableCell";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,6 +30,7 @@ const Car = ({ item, addToCart }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader title={`${item.maker} ${item.model} `} subheader={`${item.year}  ${parseFloat(item.price).toLocaleString()}$`} />
@@ -55,7 +55,14 @@ const Car = ({ item, addToCart }) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Table padding="checkbox">
+          <Table
+            padding="checkbox"
+            sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBlockColor: "rgba(0, 23, 76, 0.4)",
+              },
+            }}
+          >
             <TableBody>
               <TableRow hover>
                 <TableCell> Maker</TableCell>

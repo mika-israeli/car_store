@@ -1,7 +1,8 @@
 import CarFeed from "./components/CarFeed";
 import { useState, useEffect } from "react";
-import SideBar from "./components/SideBar";
-import { Box } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
+import SelectableList from "./components/SelectableList";
+import LeftBar from "./components/LeftBar";
 //import data from "./mockData";
 function App() {
   const [data, setdata] = useState([]);
@@ -11,14 +12,16 @@ function App() {
       .then((res) => setdata(res))
       .catch((err) => console.log(err));
   }, []);
-  
-  return <div>
-    <Box>
-    
-    {data && <CarFeed items={data} />}
-    </Box>
-    
-  </div>;
+
+  return (
+    <div>
+      {/* <Box>{data && <CarFeed items={data} />}</Box> */}
+      {/* <SelectableList />
+      <SelectableList /> */}
+      <CssBaseline enableColorScheme />
+      {data && <LeftBar items={data} />}
+    </div>
+  );
 }
 
 export default App;

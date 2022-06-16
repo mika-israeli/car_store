@@ -11,17 +11,16 @@ const CarFeed = ({ items }) => {
     setSort(event.target.value);
   };
   const [renderArray, setrenderArray] = useState(items);
-
   useEffect(() => {
     setrenderArray(items);
   }, [items]);
   useEffect(() => {
     const temp = [...renderArray];
     const sorted = temp.sort((a, b) => {
-      if(a[sort] < b[sort]) {
+      if (a[sort] < b[sort]) {
         return -1;
       }
-      if(a[sort] > b[sort]) {
+      if (a[sort] > b[sort]) {
         return 1;
       }
       return 0;
@@ -29,23 +28,24 @@ const CarFeed = ({ items }) => {
     setrenderArray(sorted);
   }, [sort]);
   return (
-    <Box>
+    <div>
       <Select value={sort} onChange={handleChange}>
         {sortParameters.map((param) => {
           return <MenuItem value={param}>{param}</MenuItem>;
         })}
       </Select>
-
-      <Grid container justifyContent="center" spacing={3}>
-        {renderArray.map((car) => {
-          return (
-            <Grid item>
-              <Car item={car} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 0, maxWidth: "90%", alignItems: "flex-start", gap: "10px", justifyContent: "flex-start" }}>
+        <Grid container justifyContent="center" spacing={3} padding={0} m={0}>
+          {renderArray.map((car) => {
+            return (
+              <Grid item>
+                <Car item={car} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+    </div>
   );
 };
 
