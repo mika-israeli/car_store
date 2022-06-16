@@ -18,7 +18,13 @@ const CarFeed = ({ items }) => {
   useEffect(() => {
     const temp = [...renderArray];
     const sorted = temp.sort((a, b) => {
-      return a[sort] - b[sort];
+      if(a[sort] < b[sort]) {
+        return -1;
+      }
+      if(a[sort] > b[sort]) {
+        return 1;
+      }
+      return 0;
     });
     setrenderArray(sorted);
   }, [sort]);
