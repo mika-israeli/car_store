@@ -20,7 +20,7 @@ router.get("/:field/:value", async (req, res) => {
 });
 
 //TODO: add authentication to this route
-router.post("/add", carValidationSchema, validateSchema, verifyAuthAdmin, async (req, res) => {
+router.post("/add", carValidationSchema, validateSchema, async (req, res) => {
   const car = await carService.add(req.body);
   res.json(car);
 });

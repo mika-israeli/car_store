@@ -32,13 +32,12 @@ const Car = ({ item, addToCart }) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader title={`${item.maker} ${item.model} `} subheader={`${item.year}  ${parseFloat(item.price).toLocaleString()}$`} />
+    <Card sx={{ maxWidth: 345, minWidth: 345, minHeight: 250 }}>
+      <CardHeader title={`${item.manufacturer} ${item.model} `} subheader={`${item.year}  ${parseFloat(item.price).toLocaleString()}$`} />
       <CardMedia component="img" height="200" image={item.image} alt="car image" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          Description: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut, veniam doloremque debitis, voluptates soluta, nobis eligendi esse unde illum ipsa aspernatur expedita? Consequuntur minima dolores eaque necessitatibus magni dicta
-          saepe?
+          {item.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -65,8 +64,8 @@ const Car = ({ item, addToCart }) => {
           >
             <TableBody>
               <TableRow hover>
-                <TableCell> Maker</TableCell>
-                <TableCell>{item.maker}</TableCell>
+                <TableCell> Manufacturer</TableCell>
+                <TableCell>{item.manufacturer}</TableCell>
               </TableRow>
               <TableRow hover>
                 <TableCell>Model </TableCell>

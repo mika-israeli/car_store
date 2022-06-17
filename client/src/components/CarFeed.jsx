@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { Grid, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
 const CarFeed = ({ items }) => {
-  const [sort, setSort] = useState("maker");
-  const sortParameters = ["price", "maker", "year"];
+  const [sort, setSort] = useState("manufacturer");
+  const sortParameters = ["price", "manufacturer", "year"];
 
   const handleChange = (event) => {
     setSort(event.target.value);

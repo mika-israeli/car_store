@@ -6,13 +6,13 @@ const userValidationSchema = [
   body("email").isEmail().withMessage("email must be a valid email address"),
 ];
 const carValidationSchema = [
-  body("maker").isString().isLength({ min: 3, max: 50 }).withMessage("make must be between 3 and 50 characters"),
+  body("manufacturer").isString().isLength({ min: 3, max: 50 }).withMessage("make must be between 3 and 50 characters"),
   body("model").isString().isLength({ min: 3, max: 50 }).withMessage("model must be between 3 and 50 characters"),
   body("year").isNumeric().isLength({ min: 4, max: 4 }).withMessage("year must be a valid year"),
   body("color").isString().isLength({ min: 3, max: 50 }).withMessage("color must be between 3 and 50 characters"),
   body("price").isNumeric().withMessage("price must be a number"),
   body("kilometers").isNumeric().withMessage("kilometers must be a number"),
-  body("type").isArray().withMessage("type must be an array"),
+  //body("type").isArray().withMessage("type must be an array"),
   body("image").isString().withMessage("image must be a string"),
 ];
 

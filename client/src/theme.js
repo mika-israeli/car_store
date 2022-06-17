@@ -20,7 +20,7 @@ export const theme = createTheme({
     success: {
       main: "#173918",
     },
-    divider: "rgba(0,23,76,0.9)",
+    divider: "rgba(0,23,76,0.4)",
   },
   typography: {
     h5: {
