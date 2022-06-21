@@ -9,10 +9,12 @@ router.post("/register", userValidationSchema, validateSchema, async (req, res) 
   const usernameExists = await userService.getUserByUsernameOrEmail(req.body.username, req.body.email);
   if (usernameExists) {
     if (usernameExists.username === req.body.username) {
-      res.status(400).json({ message: "username already exists" });
+      res.status(400).send({ message: "username already exists" });
+      return;
     }
     if (usernameExists.email === req.body.email) {
-      res.status(400).json({ message: "email already exists" });
+      res.status(400).send({ message: "email already exists" });
+      return;
     }
     return;
   }

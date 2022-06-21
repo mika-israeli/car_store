@@ -1,11 +1,13 @@
 import React from "react";
 import Car from "./Car";
 import { useState, useEffect } from "react";
-import { Grid, MenuItem, Select } from "@mui/material";
+import { Button, Grid, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
-const CarFeed = ({ items }) => {
+import SideBar from "./SideBar";
+const CarFeed = ({ items, openMenu }) => {
   const [sort, setSort] = useState("manufacturer");
   const sortParameters = ["price", "manufacturer", "year"];
+  const [openFilter, setopenFilter] = useState(false);
 
   const handleChange = (event) => {
     setSort(event.target.value);
@@ -27,6 +29,7 @@ const CarFeed = ({ items }) => {
     });
     setrenderArray(sorted);
   }, [sort]);
+
   return (
     <div>
       <Select value={sort} onChange={handleChange}>
@@ -34,6 +37,13 @@ const CarFeed = ({ items }) => {
           return <MenuItem value={param}>{param}</MenuItem>;
         })}
       </Select>
+      <Button
+        onClick={() => {
+          setopenFilter(!openFilter);
+        }}
+      >
+        Filter
+      </Button>
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 0, maxWidth: "90%", alignItems: "flex-start", gap: "10px", justifyContent: "flex-start" }}>
         <Grid container justifyContent="center" spacing={3} padding={0} m={0}>
           {renderArray.map((car) => {
@@ -44,9 +54,9 @@ const CarFeed = ({ items }) => {
             );
           })}
         </Grid>
+        {/* <SideBar isOpen={openFilter} /> */}
       </Box>
     </div>
   );
 };
-
 export default CarFeed;

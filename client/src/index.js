@@ -2,17 +2,23 @@ import { ThemeProvider } from "@mui/material";
 import React from "react";
 import { createContext } from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
+import { AuthProvider } from "./Context/AuthProvider";
 import { theme } from "./theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const ThemeContext = createContext("dark");
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter baseUrl="/">
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 
