@@ -14,8 +14,10 @@ import AuthContext from "../Context/AuthProvider";
 import axios from "../api/axios";
 import { Alert } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import { useNavigate } from "react-router";
 const Signup = () => {
   const REGISTAR_URL = "auth/register";
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,6 +33,7 @@ const Signup = () => {
         },
         withCredentials: true,
       });
+      return navigate("/login");
     } catch (error) {
       console.log(error.response.data);
       seterror(error.response.data.message);
@@ -62,7 +65,7 @@ const Signup = () => {
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField margin="normal" required fullWidth id="username" label="Username" name="username" autoFocus />
-          <TextField margin="normal" required fullWidth id="email" label="Email" name="email" autoFocus autoComplete="email" />
+          <TextField margin="normal" required fullWidth id="email" label="Email" name="email" autoComplete="email" />
           <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign up

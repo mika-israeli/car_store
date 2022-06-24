@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import { tableCellClasses } from "@mui/material/TableCell";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import useCart from "../Hooks/useCart";
+import toast from "react-hot-toast";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -30,7 +32,13 @@ const Car = ({ item, addToCart }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const handleAddCart = () => {
+    setCart([...Cart, item]);
+    toast(`${item.manufacturer} ${item.model} ${item.year} was added to the cart`, {
+      icon: "🚗",
+    });
+  };
+  const { Cart, setCart } = useCart();
   return (
     <Card sx={{ maxWidth: 345, minWidth: 345, minHeight: 250 }}>
       <CardHeader title={`${item.manufacturer} ${item.model} `} subheader={`${item.year}  ${parseFloat(item.price).toLocaleString()}$`} />
@@ -42,7 +50,7 @@ const Car = ({ item, addToCart }) => {
       </CardContent>
       <CardActions disableSpacing>
         <Tooltip title="Add to cart">
-          <IconButton>
+          <IconButton onClick={() => handleAddCart()}>
             <AddShoppingCartIcon />
           </IconButton>
         </Tooltip>

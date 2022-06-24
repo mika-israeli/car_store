@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button, Grid, MenuItem, Select } from "@mui/material";
 import { Box } from "@mui/system";
 import SideBar from "./SideBar";
+import useCart from "../Hooks/useCart";
 const CarFeed = ({ items, openMenu }) => {
   const [sort, setSort] = useState("manufacturer");
   const sortParameters = ["price", "manufacturer", "year"];
