@@ -51,7 +51,7 @@ const Navbar = () => {
   const [drawerOpen, setdrawerOpen] = useState(false);
   const { Auth, setAuth } = useAuth();
   const { User } = useUser();
-  const { Cart } = useCart();
+  const { Cart, setCart } = useCart();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -69,6 +69,7 @@ const Navbar = () => {
   };
   const handleLogOut = () => {
     setAuth({});
+    setCart([]);
     console.log(Auth);
   };
   const settings = [

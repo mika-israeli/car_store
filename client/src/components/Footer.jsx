@@ -1,16 +1,39 @@
-import { Box, Grid, Link, ThemeProvider, Typography } from "@mui/material";
-import { Container } from "@mui/system";
-import React from "react";
-
+import * as React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Link from "@mui/material/Link";
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary">
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 const Footer = () => {
   return (
-    <footer>
-      <Box px={{ xs: 3, sm: 7 }} py={{ xs: 5, sm: 10 }} color="black" bgcolor="primary">
-        <Container maxWidth="100%" sx={{ position: "sticky", bottom: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Typography>THIS IS THE FOOTER</Typography>
-        </Container>
-      </Box>
-    </footer>
+    <Box
+      component="footer"
+      sx={{
+        py: 3,
+        px: 2,
+        mt: "auto",
+        backgroundColor: (theme) => theme.palette.primary.light,
+      }}
+      position="sticky"
+      bottom={0}
+    >
+      <Container maxWidth="sm">
+        <Typography variant="body1">My sticky footer can be found here.</Typography>
+        <Copyright />
+      </Container>
+    </Box>
   );
 };
 

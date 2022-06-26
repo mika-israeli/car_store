@@ -15,21 +15,23 @@ import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <div>
-      <Toaster />
-      <CssBaseline enableColorScheme />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* public routes */}
-          <Route path="/Cars" element={<Products />} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route element={<RequireAuth />}>
-            <Route path="/Contact" element={<Contact />} />
+      <Box display="flex" flexDirection="column" minHeight="100vh">
+        <Toaster />
+        <CssBaseline enableColorScheme />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {/* public routes */}
+            <Route path="/Cars" element={<Products />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route element={<RequireAuth />}>
+              <Route path="/Contact" element={<Contact />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </Box>
       <Footer />
     </div>
   );

@@ -10,8 +10,8 @@ const Contact = () => {
 
 const Map = () => {
   return (
-    <GoogleMap zoom={10} center={{ lat: 31.96850673973022, lng: 34.76463872140314 }} mapContainerStyle={{ width: 500, height: 500 }}>
-      <Marker position={{ lat: 31.96850673973022, lng: 34.76463872140314 }} />
+    <GoogleMap zoom={15} center={{ lat: 31.970050939595765, lng: 34.772715385506295 }} mapContainerStyle={{ width: 500, height: 500 }}>
+      <Marker position={{ lat: 31.970050939595765, lng: 34.772715385506295 }} />
     </GoogleMap>
   );
 };

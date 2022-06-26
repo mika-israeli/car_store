@@ -50,7 +50,7 @@ const LeftBar = ({ items }) => {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}></AppBar>
-      <Drawer variant="persistent" sx={{ width: 350, flexShrink: 0, [`& .MuiDrawer-paper`]: { width: 300, boxSizing: "border-box" } }} hideBackdrop elevation={0} open={true}>
+      <Drawer variant="persistent" sx={{ zIndex: -1, width: 350, flexShrink: 0, [`& .MuiDrawer-paper`]: { width: 300, boxSizing: "border-box" } }} hideBackdrop elevation={0} open={true}>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <SelectableList label="manufacturer" values={Array.from(manufacturers)} onFilterChange={onFilterChange} />
