@@ -203,7 +203,6 @@ const Navbar = () => {
                 ))}
               </Menu>
               <Drawer open={drawerOpen} anchor="right" onClose={toggleDrawer(false)} variant="temporary">
-                XD
                 <CartPage />
               </Drawer>
             </Box>

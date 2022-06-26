@@ -4,6 +4,7 @@ const userService = require("../services/userService");
 const jwt = require("jsonwebtoken");
 const { userValidationSchema } = require("../validation/validationsSchema");
 const validateSchema = require("../validation/validation");
+const User = require("../models/user.model");
 router.post("/register", userValidationSchema, validateSchema, async (req, res) => {
   //check if user already exists
   const usernameExists = await userService.getUserByUsernameOrEmail(req.body.username, req.body.email);
@@ -18,7 +19,6 @@ router.post("/register", userValidationSchema, validateSchema, async (req, res) 
     }
     return;
   }
-
   //create the user and hash the password and save it to the database
   try {
     const hashedpassword = await bcrypt.hash(req.body.password, 10);
@@ -50,10 +50,11 @@ router.post("/login", userValidationSchema, async (req, res) => {
   }
   //create and assign a token
   const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET);
-  res.header("auth-token", token).send("Logged in successfully");
+  res.header("auth-token", token).send(user.isAdmin);
 });
 
-router.get("/login", (req, res) => {
-  res.render("../views/login.ejs");
+//RFRESH TOKEN
+router.get("/refresh", async (req, res) => {
+  const refreshToken = req.headers["auth-token"];
 });
 module.exports = router;
