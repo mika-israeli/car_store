@@ -4,18 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 const Footer = () => {
   return (
     <Box
@@ -25,13 +14,17 @@ const Footer = () => {
         px: 2,
         mt: "auto",
         backgroundColor: (theme) => theme.palette.primary.light,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
       position="sticky"
       bottom={0}
     >
-      <Container maxWidth="sm">
-        <Typography variant="body1">My sticky footer can be found here.</Typography>
-        <Copyright />
+      <Container>
+        <Typography variant="body1" textAlign="center">
+          My sticky footer can be found here.
+        </Typography>
       </Container>
     </Box>
   );

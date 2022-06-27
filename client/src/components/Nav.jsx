@@ -70,7 +70,6 @@ const Navbar = () => {
   const handleLogOut = () => {
     setAuth({});
     setCart([]);
-    console.log(Auth);
   };
   const settings = [
     {

@@ -1,5 +1,5 @@
 import { Grid, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -15,6 +15,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import useCart from "../Hooks/useCart";
 import toast from "react-hot-toast";
+import useUser from "../Hooks/useUser";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import useAuth from "../Hooks/useAuth";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -28,17 +31,25 @@ const ExpandMore = styled((props) => {
 
 const Car = ({ item, addToCart }) => {
   const [expanded, setExpanded] = React.useState(false);
-
+  const { Cart, setCart } = useCart();
+  const { User } = useUser();
+  const { Auth } = useAuth();
+  const [value, setvalue] = useLocalStorage(User._id, []);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   const handleAddCart = () => {
+    if (Object.keys(Auth).length === 0) {
+      toast.error("Please login to add to cart");
+      return;
+    }
     setCart([...Cart, item]);
+    setvalue(Cart);
     toast(`${item.manufacturer} ${item.model} ${item.year} was added to the cart`, {
       icon: "🚗",
     });
   };
-  const { Cart, setCart } = useCart();
+
   return (
     <Card sx={{ maxWidth: 345, minWidth: 345, minHeight: 250 }}>
       <CardHeader title={`${item.manufacturer} ${item.model} `} subheader={`${item.year}  ${parseFloat(item.price).toLocaleString()}$`} />

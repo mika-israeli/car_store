@@ -15,12 +15,17 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import useUser from "../Hooks/useUser";
 import jwt_decode from "jwt-decode";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import useCart from "../Hooks/useCart";
 const Login = () => {
   const { setAuth } = useAuth();
-  const { setUser } = useUser();
+  const { User, setUser } = useUser();
   const LOGIN_URL = "auth/login";
   const navigate = useNavigate();
   const location = useLocation();
+  const [value, setvalue] = useLocalStorage(User._id, []);
+
+  const { Cart, setCart } = useCart();
   const from = location.state?.from?.pathname || "/";
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,6 +49,10 @@ const Login = () => {
         .get(`users/find/${decoded.id}`)
         .then((res) => setUser(res.data))
         .catch((err) => console.log(err));
+
+      if (value) {
+        setCart(value);
+      }
       setAuth({ accessToken, isAdmin });
       navigate(from, { replace: true });
     } catch (error) {

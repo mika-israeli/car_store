@@ -27,6 +27,7 @@ const CartPage = () => {
     setalertOpen(false);
   };
   const [itemtoremove, setitemtoremove] = useState({});
+  console.log(Cart);
   return (
     <Box minWidth={600} maxWidth={600} component="section" height="100%" sx={{ display: "flex", flexDirection: "column" }} padding={2}>
       <Dialog open={alertOpen} onClose={() => setalertOpen(false)}>
