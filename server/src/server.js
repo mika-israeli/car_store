@@ -2,13 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 5000;
 dotenv.config();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000", exposedHeaders: "auth-token" }));
 app.use(express.json());
-
+app.use(bodyParser.json());
 //db connection --------------------------------------------------------------
 
 const uri = process.env.ATLAS_URI;

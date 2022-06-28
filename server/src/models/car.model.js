@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const carSchema = new Schema(
   {
-    maker: {
+    manufacturer: {
       type: String,
       required: true,
     },
@@ -31,6 +31,10 @@ const carSchema = new Schema(
       required: true,
     },
     image: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },

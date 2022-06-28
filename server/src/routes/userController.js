@@ -24,7 +24,7 @@ router.delete("/:id", verifyAuth, async (req, res) => {
   }
 });
 
-router.get("/find/:id", verifyAuthAdmin, async (req, res) => {
+router.get("/find/:id", verifyAuth, async (req, res) => {
   try {
     const result = await userService.getUserById(req.params.id);
     res.status(200).json(result);
