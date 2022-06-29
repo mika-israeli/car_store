@@ -3,9 +3,13 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new Schema(
   {
-    user: {
+    userid: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    userDetails: {
+      type: Object,
       required: true,
     },
     items: [
@@ -26,6 +30,11 @@ const orderSchema = new Schema(
     address: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      enum: ["pending", "completed", "cancelled"],
     },
   },
   {

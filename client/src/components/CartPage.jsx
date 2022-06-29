@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, Divider, IconButton, Tooltip, Typography, DialogContentText, DialogActions, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogContent, Divider, IconButton, Tooltip, Typography, DialogContentText, DialogActions, DialogTitle, Collapse } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import useCart from "../Hooks/useCart";
@@ -6,6 +6,9 @@ import Car from "./Car";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { TransitionGroup } from "react-transition-group";
+import { useNavigate } from "react-router";
+
 const CartPage = () => {
   const { Cart, setCart } = useCart();
   const [alertOpen, setalertOpen] = useState(false);
@@ -13,6 +16,7 @@ const CartPage = () => {
     setitemtoremove(event.currentTarget.value);
     setalertOpen(true);
   };
+  const navigate = useNavigate();
   const onItemRemove = () => {
     const index = Cart.findIndex((item) => item._id === itemtoremove);
     const newCart = [...Cart];
@@ -48,34 +52,38 @@ const CartPage = () => {
           Your cart is empty
         </Typography>
       ) : (
-        Cart.map((item) => {
-          return (
-            <Box component="div" display="flex" alignItems="center" flexDirection="column">
-              <Divider orientation="horizontal" sx={{ width: "90%" }} />
-              <Box sx={{ display: "flex", alignItems: "flex-end", gap: 5, padding: 3 }} maxWidth={550}>
-                <Box justifyContent="flex-start" display="flex" sx={{ width: "500px" }} flexDirection="column">
-                  <img src={item.image} style={{ maxWidth: 150, maxHeight: 150 }} />
-                  <Typography variant="h6">
-                    <b>
-                      {item.manufacturer} {item.model}
-                    </b>
-                  </Typography>
-                  <Typography variant="overline">
-                    {item.year} in {item.color} color
-                  </Typography>
+        <TransitionGroup>
+          <Collapse>
+            {Cart.map((item) => {
+              return (
+                <Box component="div" display="flex" alignItems="center" flexDirection="column">
+                  <Divider orientation="horizontal" sx={{ width: "90%" }} />
+                  <Box sx={{ display: "flex", alignItems: "flex-end", gap: 5, padding: 3 }} maxWidth={550}>
+                    <Box justifyContent="flex-start" display="flex" sx={{ width: "500px" }} flexDirection="column">
+                      <img src={item.image} style={{ maxWidth: 150, maxHeight: 150 }} />
+                      <Typography variant="h6">
+                        <b>
+                          {item.manufacturer} {item.model}
+                        </b>
+                      </Typography>
+                      <Typography variant="overline">
+                        {item.year} in {item.color} color
+                      </Typography>
+                    </Box>
+                    <Box display="flex" flexDirection="column">
+                      <IconButton edge="start" size="small" onClick={onWantToRemove} value={item._id}>
+                        <Tooltip title="Remove item" enterDelay={120} placement="top">
+                          <RemoveCircleOutlineIcon />
+                        </Tooltip>
+                      </IconButton>
+                      <Typography variant="body">Price: {item.price.toLocaleString()}$</Typography>
+                    </Box>
+                  </Box>
                 </Box>
-                <Box display="flex" flexDirection="column">
-                  <IconButton edge="start" size="small" onClick={onWantToRemove} value={item._id}>
-                    <Tooltip title="Remove item" enterDelay={120} placement="top">
-                      <RemoveCircleOutlineIcon />
-                    </Tooltip>
-                  </IconButton>
-                  <Typography variant="body">Price: {item.price.toLocaleString()}$</Typography>
-                </Box>
-              </Box>
-            </Box>
-          );
-        })
+              );
+            })}
+          </Collapse>
+        </TransitionGroup>
       )}
 
       <Box component="footer" position="sticky" bottom={0} bgcolor="#E8E8E8">
@@ -85,7 +93,9 @@ const CartPage = () => {
         </Typography>
         <Button variant="contained">Contiue shopping</Button>
         <br />
-        <Button variant="contained">Checkout</Button>
+        <Button variant="contained" onClick={() => navigate("/checkout")}>
+          Checkout
+        </Button>
       </Box>
     </Box>
   );

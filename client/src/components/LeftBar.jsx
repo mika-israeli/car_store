@@ -1,4 +1,4 @@
-import { AppBar, CssBaseline, Drawer, Hidden, Slider, Toolbar, Typography } from "@mui/material";
+import { AppBar, Button, CssBaseline, Drawer, Hidden, Input, Slider, TextField, Toolbar, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import CarFeed from "./CarFeed";
@@ -6,64 +6,57 @@ import SelectableList from "./SelectableList";
 import { useState } from "react";
 import Navbar from "./Nav";
 import SideBar from "./SideBar";
-const LeftBar = ({ items }) => {
+const LeftBar = ({ items, onApplyChanges }) => {
   const manufacturers = new Set(items.map((i) => i.manufacturer).sort());
   const colors = new Set(items.map((i) => i.color).sort());
-  const [allCars, setallCars] = useState(items);
-  const [filterCars, setfilterCars] = useState(items);
   const [filters, setfilters] = useState([]);
-  const priceRange = [Math.max(...items.map((i) => i.price)), Math.min(...items.map((i) => i.price))];
+  const priceRange = [Math.min(...items.map((i) => i.price)), Math.max(...items.map((i) => i.price))];
+  const [sliderValues, setsliderValues] = useState([priceRange[0], priceRange[1]]);
+  const slideMarks = [
+    {
+      value: priceRange[0],
+      label: `$${priceRange[0]}`,
+    },
+    {
+      value: priceRange[1],
+      label: `$${priceRange[1]}`,
+    },
+  ];
   const onFilterChange = (key, value, checked) => {
     if (checked) {
-      const newCars = filterCars.filter((car) => {
-        return car[`${key}`] === value;
-      });
-      filters.push({ key, value });
-
-      setfilterCars(newCars);
+      setfilters([...filters, { key, value }]);
     } else {
-      filters.forEach((f, index) => (f.key === key && f.value === value ? filters.splice(index, 1) : f));
-
-      setfilterCars(allCars);
-      let temp = [...allCars];
-      filters.forEach((filter) => {
-        const newCars = temp.filter((car) => {
-          return car[filter.key] === filter.value;
-        });
-        temp = newCars;
-      });
-      setfilterCars(temp);
+      // remove the filter
+      setfilters(filters.filter((f) => f.key !== key || f.value !== value));
     }
   };
   const onPriceChange = (event, value) => {
-    let newcars = [...allCars];
-    newcars = newcars.filter((car) => car.price <= value[1] && car.price >= value[0]);
-    filters.forEach((filter) => {
-      const newCars = newcars.filter((car) => {
-        return car[filter.key] === filter.value;
-      });
-      newcars = newCars;
-      console.log(newcars, " newcars");
-    });
-    setfilterCars(newcars);
+    setsliderValues(value);
   };
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}></AppBar>
-      <Drawer variant="persistent" sx={{ zIndex: -1, width: 350, flexShrink: 0, [`& .MuiDrawer-paper`]: { width: 300, boxSizing: "border-box" } }} hideBackdrop elevation={0} open={true}>
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <SelectableList label="manufacturer" values={Array.from(manufacturers)} onFilterChange={onFilterChange} />
-          <SelectableList label="color" values={Array.from(colors)} onFilterChange={onFilterChange} />
+    <Box display="flex" justifyContent="flex-start" width={350} padding={3}>
+      <Box display="flex" flexDirection="column" gap={3}>
+        <SelectableList label="manufacturer" values={Array.from(manufacturers)} onFilterChange={onFilterChange} />
+        <SelectableList label="color" values={Array.from(colors)} onFilterChange={onFilterChange} />
+        <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <Typography>Price</Typography>
-          <Slider defaultValue={priceRange} max={priceRange[0]} min={priceRange[1]} valueLabelDisplay="auto" sx={{ maxWidth: 200, margin: 4 }} size="small" onChangeCommitted={onPriceChange} />
+
+          <Slider max={priceRange[1]} min={priceRange[0]} valueLabelDisplay="auto" sx={{ maxWidth: 250 }} size="small" onChange={onPriceChange} marks={slideMarks} value={sliderValues} valueLabelFormat={(x) => "$" + x.toLocaleString()} />
+          <Box display="flex" justifyContent="space-around" paddingTop={2} gap={1}>
+            <TextField id="standard-basic" label="Starting Price" onChange={(e) => setsliderValues([e.currentTarget.value, sliderValues[1]])} size="small" value={sliderValues[0]} />
+            <Typography variant="body2">to</Typography>
+            <TextField id="standard-basic" label="Maximum Price" onChange={(e) => setsliderValues([sliderValues[0], e.currentTarget.value])} size="small" value={sliderValues[1]} />
+          </Box>
         </Box>
-      </Drawer>
-
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-
-        <CarFeed items={filterCars} />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            onApplyChanges(filters, sliderValues);
+          }}
+        >
+          Apply filters
+        </Button>
       </Box>
     </Box>
   );
