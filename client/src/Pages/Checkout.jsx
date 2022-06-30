@@ -13,14 +13,26 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 const Checkout = () => {
   const [activeStep, setactiveStep] = useState(0);
-  const navigate = useNavigate();
   const { User } = useUser();
   const { Cart } = useCart();
   const { Auth } = useAuth();
   const [status, setstatus] = useState(false);
-  const [shippingDetails, setshippingDetails] = useState({});
+  const [shippingDetails, setshippingDetails] = useState({ email: User.email });
+  const products = Cart.map((product) => {
+    return {
+      name: product.manufacturer + " " + product.model,
+      desc: product.description,
+      year: product.year,
+      price: product.price,
+    };
+  });
   const onNext = () => {
-    setactiveStep(activeStep + 1);
+    //check if the form is valid
+    if (shippingDetails.firstName && shippingDetails.lastName && shippingDetails.address1 && shippingDetails.city && shippingDetails.zip) {
+      setactiveStep(activeStep + 1);
+    } else {
+      toast.error("Please fill in all the fields");
+    }
   };
   const onBack = () => {
     setactiveStep(activeStep - 1);
@@ -33,11 +45,11 @@ const Checkout = () => {
       case 0:
         return <Address onChange={onChange} shippingDetails={shippingDetails} />;
       case 1:
-        return <Review shippingDetails={shippingDetails} />;
+        return <Review shippingDetails={shippingDetails} products={products} />;
       case 2:
         return (
           <Alert severity="success">
-            Thank you for your order! you can view your order status <Link to={{ pathname: "/cars" }}>Your orders</Link>
+            Thank you for your order! you can view your order status <Link to={{ pathname: "/orderhistory" }}>Your orders</Link>
           </Alert>
         );
       default:

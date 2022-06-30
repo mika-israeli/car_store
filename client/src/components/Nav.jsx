@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DirectionsCarTwoToneIcon from "@mui/icons-material/DirectionsCarTwoTone";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
 import ConnectWithoutContactTwoToneIcon from "@mui/icons-material/ConnectWithoutContactTwoTone";
@@ -25,6 +25,7 @@ import { Badge, Drawer } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import useCart from "../Hooks/useCart";
 import CartPage from "./CartPage";
+import toast from "react-hot-toast";
 
 const pages = [
   { name: "Home", icon: <HomeTwoToneIcon />, link: "/home" },
@@ -52,7 +53,7 @@ const Navbar = () => {
   const { Auth, setAuth } = useAuth();
   const { User } = useUser();
   const { Cart, setCart } = useCart();
-
+  const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -70,10 +71,18 @@ const Navbar = () => {
   const handleLogOut = () => {
     setAuth({});
     setCart([]);
+    toast("Logged out successfully", { type: "success" });
+    navigate("/home");
   };
   const settings = [
     {
-      name: "logout",
+      name: "Order History",
+      onClick: () => {
+        navigate("/orderhistory");
+      },
+    },
+    {
+      name: "Logout",
       onClick: handleLogOut,
     },
   ];
@@ -203,7 +212,7 @@ const Navbar = () => {
                 ))}
               </Menu>
               <Drawer open={drawerOpen} anchor="right" onClose={toggleDrawer(false)} variant="temporary">
-                <CartPage />
+                <CartPage closeCart={() => setdrawerOpen(false)} />
               </Drawer>
             </Box>
           ) : (

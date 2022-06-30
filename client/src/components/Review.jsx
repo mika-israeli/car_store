@@ -14,16 +14,9 @@ const payments = [
   { name: "Expiry date", detail: "04/2024" },
 ];
 
-export default function Review({ shippingDetails }) {
+export default function Review({ shippingDetails, products }) {
   const { Cart } = useCart();
-  const products = Cart.map((product) => {
-    return {
-      name: product.manufacturer + " " + product.model,
-      desc: product.description,
-      year: product.year,
-      price: product.price,
-    };
-  });
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

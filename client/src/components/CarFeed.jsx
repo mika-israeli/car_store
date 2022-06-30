@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button, Drawer, Grid, MenuItem, Pagination, Select } from "@mui/material";
 import { Box } from "@mui/system";
 import LeftBar from "./LeftBar";
+import SearchBar from "./SearchBar";
 const CarFeed = ({ items }) => {
   const [sort, setSort] = useState("manufacturer");
   const sortParameters = ["price - high to low", "price - low to high", "manufacturer", "year"];
@@ -81,7 +82,7 @@ const CarFeed = ({ items }) => {
           </Select>
         </Box>
       </Box>
-
+      <SearchBar />
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 0, maxWidth: "80%", alignItems: "center", gap: "10px", justifyContent: "center" }}>
         <Grid container justifyContent="flex-start" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 5, md: 5 }}>
           {renderArray.map((car) => {

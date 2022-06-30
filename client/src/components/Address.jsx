@@ -15,7 +15,7 @@ const Address = ({ onChange, shippingDetails }) => {
           <TextField required id="address1" name="address1" label="Street name" autoComplete="shipping address-line1" variant="standard" onChange={onChange} defaultValue={shippingDetails?.address1} />
         </Grid>
         <Grid item xs={12}>
-          <TextField required id="email" name="eail" label="Email" autoComplete="email" variant="standard" disabled onChange={onChange} defaultValue={shippingDetails?.email} />
+          <TextField required id="email" name="eail" label="Email" autoComplete="email" variant="standard" disabled onChange={onChange} defaultValue={shippingDetails.email} />
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField required id="city" name="city" label="City" autoComplete="shipping address-level2" variant="standard" onChange={onChange} defaultValue={shippingDetails?.city} />

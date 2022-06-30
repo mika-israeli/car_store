@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { TransitionGroup } from "react-transition-group";
 import { useNavigate } from "react-router";
 
-const CartPage = () => {
+const CartPage = ({ closeCart }) => {
   const { Cart, setCart } = useCart();
   const [alertOpen, setalertOpen] = useState(false);
   const onWantToRemove = (event) => {
@@ -91,11 +91,17 @@ const CartPage = () => {
         <Typography position="static" bottom={0} variant="h6">
           Total: {Cart.reduce((a, b) => a + b.price, 0).toLocaleString()}$
         </Typography>
-        <Button variant="contained">Contiue shopping</Button>
-        <br />
-        <Button variant="contained" onClick={() => navigate("/checkout")}>
-          Checkout
-        </Button>
+        {Cart.length > 0 && (
+          <Button
+            variant="contained"
+            onClick={() => {
+              closeCart();
+              navigate("/checkout");
+            }}
+          >
+            Checkout
+          </Button>
+        )}
       </Box>
     </Box>
   );
