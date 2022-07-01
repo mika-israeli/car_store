@@ -4,6 +4,8 @@ import Nevbar from "../../components/nevbar/Nevbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useState } from "react";
 
+//I need to add punctionality to add users here
+
 const New = ({ inputs, title }) => {
   const [file, setFile] = useState("");
 
