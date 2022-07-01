@@ -32,7 +32,7 @@ router.get("/find/:id", verifyAuth, async (req, res) => {
     res.status(500).json(error);
   }
 });
-
+//TODO : add admin auth to this route
 router.get("/all", async (req, res) => {
   try {
     const result = await userService.getAll();

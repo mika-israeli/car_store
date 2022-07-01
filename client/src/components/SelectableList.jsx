@@ -1,4 +1,4 @@
-import { Checkbox, Collapse, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, List, ListItem, ListItemText } from "@mui/material";
+import { Checkbox, Collapse, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, List, ListItem, ListItemText, TextField } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -18,6 +18,7 @@ const SelectableList = ({ label, values, onFilterChange }) => {
         <ListItemText primary={label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
+
       <Collapse in={open} timeout="auto" sx={{ maxHeight: 340, overflow: "auto", width: 300 }}>
         <FormControl component="fieldset">
           <FormGroup aria-label="filters">

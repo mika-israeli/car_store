@@ -78,6 +78,7 @@ const Checkout = () => {
         setactiveStep(2);
       })
       .catch((err) => {
+        console.log(err);
         toast("Something went wrong, please try again later", { type: "error" });
       });
   };

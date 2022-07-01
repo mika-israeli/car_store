@@ -5,6 +5,7 @@ const { orderValidationSchema } = require("../validation/validationsSchema");
 const validateSchema = require("../validation/validation");
 const { verifyAuth } = require("../validation/tokenVerify");
 router.get("/find/:userId", verifyAuth, async (req, res) => {
+  console.log(req.params);
   const orders = await orderService.getByUserId(req.params.userId);
   res.json(orders);
 });

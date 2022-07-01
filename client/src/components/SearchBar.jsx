@@ -1,23 +1,28 @@
 import { IconButton, TextField } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
-const SearchBar = ({ setSearchQuery }) => {
+import { useState } from "react";
+const SearchBar = ({ onSearch }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <form>
       <TextField
         id="search-bar"
         className="text"
         onInput={(e) => {
-          console.log(e.currentTarget.value);
+          setSearchQuery(e.target.value);
+        }}
+        onChange={(e) => {
+          onSearch(e, e.target.value);
         }}
         label="Seach car"
         variant="outlined"
         placeholder="Search..."
         size="small"
       />
-      <IconButton type="submit" aria-label="search" onClick={(e) => e.preventDefault()}>
-        <SearchIcon style={{ fill: "blue" }} />
-      </IconButton>
+      {/* <IconButton type="submit" aria-label="search" onClick={(e) => onSearch(e, searchQuery)}>
+            <SearchIcon style={{ fill: "blue" }} />
+        </IconButton> */}
     </form>
   );
 };

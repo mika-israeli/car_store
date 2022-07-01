@@ -58,7 +58,13 @@ const CarFeed = ({ items }) => {
   useEffect(() => {
     setrenderArray(sortArray([...renderArray]));
   }, [sort]);
-
+  const setSearchQuery = (event, query) => {
+    //filter the items based on manufacturer or model
+    event.preventDefault();
+    const filteredItems = items.filter((i) => i.manufacturer.toLowerCase().includes(query.toLowerCase()) || i.model.toLowerCase().includes(query.toLowerCase()));
+    setrenderArray(sortArray(filteredItems).splice(0, PER_PAGE));
+    setpage(1);
+  };
   return (
     <Box component="div" display="flex" justifyContent="center" alignItems="center" flexDirection="column" width="100vw" paddingTop={1}>
       <Box display="flex" justifyContent="space-between" width={"80%"} alignItems="flex-end">
@@ -82,7 +88,7 @@ const CarFeed = ({ items }) => {
           </Select>
         </Box>
       </Box>
-      <SearchBar />
+      <SearchBar onSearch={setSearchQuery} />
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 0, maxWidth: "80%", alignItems: "center", gap: "10px", justifyContent: "center" }}>
         <Grid container justifyContent="flex-start" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 5, md: 5 }}>
           {renderArray.map((car) => {
