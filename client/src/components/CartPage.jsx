@@ -8,10 +8,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { TransitionGroup } from "react-transition-group";
 import { useNavigate } from "react-router";
+import UserRecommendation from "./UserRecommendation";
 
 const CartPage = ({ closeCart }) => {
   const { Cart, setCart } = useCart();
   const [alertOpen, setalertOpen] = useState(false);
+  const [recommendationsOpen, setRecommendationsOpen] = useState(false);
   const onWantToRemove = (event) => {
     setitemtoremove(event.currentTarget.value);
     setalertOpen(true);
@@ -30,6 +32,9 @@ const CartPage = ({ closeCart }) => {
     setCart(newCart);
     setalertOpen(false);
   };
+  const showRecommendation = () => {
+    setRecommendationsOpen(true);
+  };
   const [itemtoremove, setitemtoremove] = useState({});
   console.log(Cart);
   return (
@@ -43,6 +48,23 @@ const CartPage = ({ closeCart }) => {
           <Button onClick={() => setalertOpen(false)}>Cancel</Button>
           <Button onClick={(item) => onItemRemove(item)} autoFocus>
             Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={recommendationsOpen} onClose={() => setRecommendationsOpen(false)} maxWidth={"100%"}>
+        <DialogTitle>Recommendation</DialogTitle>
+        <DialogContent>
+          <UserRecommendation />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setRecommendationsOpen(false);
+              closeCart();
+              navigate("/checkout");
+            }}
+          >
+            Thanks!
           </Button>
         </DialogActions>
       </Dialog>
@@ -95,8 +117,7 @@ const CartPage = ({ closeCart }) => {
           <Button
             variant="contained"
             onClick={() => {
-              closeCart();
-              navigate("/checkout");
+              setRecommendationsOpen(true);
             }}
           >
             Checkout

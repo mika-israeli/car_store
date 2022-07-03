@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useContext } from "react";
+import UserRecommendation from "../components/UserRecommendation.jsx";
 import AuthContext from "../Context/AuthProvider";
 const Home = () => {
   const value = useContext(AuthContext);
