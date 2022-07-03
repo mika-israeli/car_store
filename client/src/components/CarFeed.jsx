@@ -11,8 +11,8 @@ const CarFeed = ({ items }) => {
   const [openFilter, setopenFilter] = useState(false);
   const [page, setpage] = useState(1);
   const PER_PAGE = 10;
-  const [renderArray, setrenderArray] = useState([...items].splice(0, PER_PAGE));
-  const maxpages = Math.ceil(items.length / PER_PAGE);
+  const [renderArray, setrenderArray] = useState([...items]);
+  const [maxpages, setmaxpages] = useState(Math.ceil(items.length / PER_PAGE));
   const sortArray = (items) => {
     switch (sort) {
       case "price - high to low":
@@ -36,7 +36,7 @@ const CarFeed = ({ items }) => {
         return filters.some((f) => i[f.key] === f.value);
       })
       .filter((i) => i.price >= prices[0] && i.price <= prices[1]);
-    setrenderArray(sortArray(filteredItems).splice(0, PER_PAGE));
+    setrenderArray(sortArray(filteredItems));
     setopenFilter(false);
     setpage(1);
   };
@@ -44,17 +44,17 @@ const CarFeed = ({ items }) => {
     setpage(value);
   };
   // whenever the page changes, we need to update the renderArray and sort the items
-  useEffect(() => {
-    const newArray = sortArray([...items]).splice((page - 1) * PER_PAGE, (page - 1) * PER_PAGE + PER_PAGE);
-    setrenderArray(newArray);
-  }, [page]);
+  // useEffect(() => {
+  //   const newArray = sortArray([...items]).splice((page - 1) * PER_PAGE, (page - 1) * PER_PAGE + PER_PAGE);
+  //   setrenderArray(newArray);
+  // }, [page]);
   const handleSortChange = (event) => {
     setSort(event.target.value);
   };
 
-  useEffect(() => {
-    setrenderArray([...items].splice((page - 1) * PER_PAGE, (page - 1) * PER_PAGE + PER_PAGE));
-  }, [items]);
+  // useEffect(() => {
+  //   setrenderArray([...items].splice((page - 1) * PER_PAGE, (page - 1) * PER_PAGE + PER_PAGE));
+  // }, [items]);
   useEffect(() => {
     setrenderArray(sortArray([...renderArray]));
   }, [sort]);
@@ -62,7 +62,7 @@ const CarFeed = ({ items }) => {
     //filter the items based on manufacturer or model
     event.preventDefault();
     const filteredItems = items.filter((i) => i.manufacturer.toLowerCase().includes(query.toLowerCase()) || i.model.toLowerCase().includes(query.toLowerCase()));
-    setrenderArray(sortArray(filteredItems).splice(0, PER_PAGE));
+    setrenderArray(sortArray(filteredItems));
     setpage(1);
   };
   return (
@@ -101,7 +101,7 @@ const CarFeed = ({ items }) => {
         </Grid>
       </Box>
 
-      <Pagination count={maxpages} page={page} onChange={handlePageChange} />
+      {/* <Pagination count={maxpages} page={page} onChange={handlePageChange} /> */}
 
       <Drawer anchor="left" open={openFilter} onClose={() => setopenFilter(false)} sx={{ minWidth: 600 }}>
         <LeftBar items={items} onApplyChanges={onApplyChanges} />

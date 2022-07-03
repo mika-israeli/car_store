@@ -10,7 +10,6 @@ const verifyToken = (req, res, next) => {
         return;
       } else {
         req.user = decoded;
-        console.log(req.user);
         next();
       }
     });
@@ -24,7 +23,6 @@ const verifyAuth = (req, res, next) => {
     if (req.user.isAdmin || req.user.id === req.body.user || req.user.id === req.params.id) {
       next();
     } else {
-      //TODO AUTH
       // res.status(403).send("Unauthorized");
       next();
     }
