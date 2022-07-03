@@ -1,4 +1,4 @@
-import { Checkbox, Collapse, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, List, ListItem, ListItemText } from "@mui/material";
+import { Checkbox, Collapse, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, List, ListItem, ListItemText, TextField } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -13,18 +13,19 @@ const SelectableList = ({ label, values, onFilterChange }) => {
   };
   const [open, setopen] = useState(false);
   return (
-    <Box component="div" sx={{ maxWidth: 250, paddingLeft: 5 }}>
+    <Box component="div">
       <ListItem button onClick={handleClick}>
         <ListItemText primary={label} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={open} timeout="auto" sx={{ maxHeight: 340, overflow: "auto" }}>
+
+      <Collapse in={open} timeout="auto" sx={{ maxHeight: 340, overflow: "auto", width: 300 }}>
         <FormControl component="fieldset">
           <FormGroup aria-label="filters">
             {values.map((item) => {
               return (
                 <div>
-                  <FormControlLabel sx={{ paddingLeft: "15px" }} value={item} control={<Checkbox />} label={item} labelPlacement="end" onChange={handleFilterChange} />
+                  <FormControlLabel value={item} control={<Checkbox />} label={item} labelPlacement="end" onChange={handleFilterChange} />
                   <Divider light />
                 </div>
               );
@@ -32,7 +33,7 @@ const SelectableList = ({ label, values, onFilterChange }) => {
           </FormGroup>
         </FormControl>
       </Collapse>
-      <Divider sx={{ maxWidth: "200px" }} />
+      <Divider />
     </Box>
   );
 };

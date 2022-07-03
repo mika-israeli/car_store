@@ -5,7 +5,7 @@ const RequireAuth = () => {
   const { Auth } = useAuth();
   console.log(Auth);
   const location = useLocation();
-  return Auth?.isAdmin ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
+  return Auth.accessToken ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;
 };
 
 export default RequireAuth;

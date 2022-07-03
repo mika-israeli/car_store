@@ -13,6 +13,11 @@ router.get("/", async (req, res) => {
   const cars = await carService.getAll();
   res.json(cars);
 });
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const car = await carService.getById(id);
+  res.json(car);
+});
 
 router.get("/:field/:value", async (req, res) => {
   const cars = await carService.getByField(req.params.field, req.params.value);

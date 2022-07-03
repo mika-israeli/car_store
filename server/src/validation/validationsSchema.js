@@ -17,10 +17,10 @@ const carValidationSchema = [
 ];
 
 const orderValidationSchema = [
-  body("user").isString().isLength({ min: 3, max: 50 }).withMessage("user must be between 3 and 50 characters"),
-  body("items").isArray().withMessage("items must be an array"),
-  body("amount").isNumeric().withMessage("amount must be a number"),
-  body("date").isString().isLength({ min: 3, max: 50 }).withMessage("date must be between 3 and 50 characters"),
-  body("address").isString().isLength({ min: 3, max: 50 }).withMessage("address must be between 3 and 50 characters"),
+  // body("user").isString().isLength({ min: 3, max: 50 }).withMessage("user must be between 3 and 50 characters"),
+  // body("items").isArray().withMessage("items must be an array"),
+  // body("amount").isNumeric().withMessage("amount must be a number"),
+  // body("date").isString().isLength({ min: 3, max: 50 }).withMessage("date must be between 3 and 50 characters"),
+  // body("address").isString().isLength({ min: 3, max: 50 }).withMessage("address must be between 3 and 50 characters"),
 ];
 module.exports = { userValidationSchema, carValidationSchema, orderValidationSchema };

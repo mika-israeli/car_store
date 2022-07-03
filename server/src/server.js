@@ -25,11 +25,12 @@ const AuthRouter = require("./routes/authController");
 const CarRouter = require("./routes/carsController");
 const OrderRouter = require("./routes/orderController");
 const UserRouter = require("./routes/userController");
+const markerRouter = require("./routes/markerController");
 app.use("/auth", AuthRouter);
 app.use("/users", UserRouter);
 app.use("/cars", CarRouter);
 app.use("/orders", OrderRouter);
-
+app.use("/markers", markerRouter);
 app.listen(port, () => {
   console.log("server listining on port :" + port);
 });

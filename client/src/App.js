@@ -11,13 +11,16 @@ import Layout from "./Pages/Layout";
 import RequireAuth from "./components/RequireAuth";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
+import UserSettings from "./Pages/UserSettings";
+import Checkout from "./Pages/Checkout";
+import OrderHistory from "./Pages/OrderHistory";
 //import data from "./mockData";
 function App() {
   return (
     <div>
       <Box display="flex" flexDirection="column" minHeight="100vh">
         <Toaster />
-        <CssBaseline enableColorScheme />
+        <CssBaseline />
         <Navbar />
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -26,7 +29,11 @@ function App() {
             <Route path="/Home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/settings" element={<UserSettings />} />
+            <Route path="OrderHistory" element={<OrderHistory />} />
+            {/* private routes */}
             <Route element={<RequireAuth />}>
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/Contact" element={<Contact />} />
             </Route>
           </Route>
