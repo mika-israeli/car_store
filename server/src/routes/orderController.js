@@ -9,11 +9,15 @@ router.get("/find/:userId", verifyAuth, async (req, res) => {
   const orders = await orderService.getByUserId(req.params.userId);
   res.json(orders);
 });
+router.get("/all", async (req, res) => {
+  const orders = await orderService.getAllOrders();
+  res.json(orders);
+});
 
 router.post("/add", orderValidationSchema, validateSchema, verifyAuth, async (req, res) => {
-  // const order = await orderService.add(req.body.Order);
-  // res.json(order);
-  res.status(200).json({ message: "Order added successfully" });
+  const order = await orderService.add(req.body.Order);
+  res.json(order);
+  // res.status(200).json({ message: "Order added successfully" });
 });
 
 // router.put("/:id", orderValidationSchema, validateSchema, verifyAuth, async (req, res) => {
