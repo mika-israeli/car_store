@@ -1,9 +1,11 @@
 import "./datatable.scss"
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { userColumns, userRows } from "../../datatablesource";
+import { userColumns, userRows, productColumns, productRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 
-const Datatable = () => {
+
+
+const Datatable = ({inputs}) => {
 
   const actionColumn=[
     {field: "action", headerName:"Action", width: 200, renderCell:()=>{
@@ -12,7 +14,8 @@ const Datatable = () => {
           <Link to="/users/test" style={{textDecoration: "none"}}>
           <div className="viewButton">View</div>
           </Link>
-          <div className="deleteButton">Delete</div>
+          <div className="deleteButton">Delete</div> 
+          {/* need to add funcionality */}
         </div>
       );
     } }
@@ -21,14 +24,15 @@ const Datatable = () => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
-        <Link to="/users/new" className="link">
+        {inputs.title}
+        <Link to={inputs.link} className="link">
           Add New
         </Link>
       </div>
  <DataGrid
-        rows={userRows}
-        columns={userColumns.concat(actionColumn)}
+        getRowId={(row) => row._id}
+        rows={inputs.dataRows}
+        columns={inputs.dataColumn.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

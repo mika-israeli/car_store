@@ -42,10 +42,12 @@ const Sidebar = () => {
                 <span>Products</span>
             </li>
             </Link>
+            <Link to="/orders" style={{textDecoration: "none"}}>
             <li>
                 <BorderColorIcon className="icon"/>
                 <span>Orders</span>
             </li>
+            </Link>
             <li>
                 <LocalPostOfficeIcon className="icon"/>
                 <span>Delivery</span>

@@ -3,13 +3,13 @@ import Nevbar from "../../components/nevbar/Nevbar"
 import Sidebar from "../../components/sidebar/Sidebar"
 import "./list.scss"
 
-const List = () => {
+const List = ({inputs}) => {
   return (
     <div className="list">
       <Sidebar/>
       <div className="listContainer">
         <Nevbar/>
-        <Datatable/>
+        <Datatable inputs={inputs}/>
       </div>
     </div>
   )
