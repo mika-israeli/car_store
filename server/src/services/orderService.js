@@ -5,5 +5,8 @@ const orderService = genericService(order);
 orderService.getByUserId = async (userId) => {
   return await order.find({ userid: userId }).populate("items").exec();
 };
+orderService.getAllOrders = async () => {
+  return await order.find({}).populate("items").exec();
+};
 
 module.exports = orderService;

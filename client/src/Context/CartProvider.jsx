@@ -7,9 +7,6 @@ export const CartProvider = ({ children }) => {
   const [Cart, setCart] = useState([]);
   const { User, setUser } = useUser();
   useEffect(() => {
-    if (Cart.length == 0) {
-      return;
-    }
     localStorage.setItem(User._id, JSON.stringify(Cart));
     console.log("localstorage cart", JSON.parse(localStorage.getItem(User._id)));
   }, [Cart]);

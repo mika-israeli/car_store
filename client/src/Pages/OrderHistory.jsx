@@ -26,7 +26,7 @@ const OrderHistory = () => {
   return (
     <Box component="main" display="flex" justifyContent="center" alignItems={"center"} flexDirection="column" sx={{ mb: 4 }}>
       <Typography variant="h4">Order History</Typography>
-      {Orders ? Orders.map((order) => <Order order={order} />) : <Typography variant="h5">No Orders</Typography>}
+      {Orders.length > 0 ? Orders.map((order) => <Order order={order} />) : <Typography variant="h5">No Orders 😞</Typography>}
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box, Checkbox, FormControlLabel, Grid, Stepper, TextField, Typography, Step, StepLabel, Container, Paper, Button, Alert } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Grid, Stepper, TextField, Typography, Step, StepLabel, Container, Paper, Button, Alert, Dialog } from "@mui/material";
 import useUser from "../Hooks/useUser";
 import Address from "../components/Address";
 import Review from "../components/Review";
@@ -11,12 +11,12 @@ import { axiosPrivate } from "../api/axios";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import UserRecommendation from "../components/UserRecommendation";
 const Checkout = () => {
   const [activeStep, setactiveStep] = useState(0);
   const { User } = useUser();
-  const { Cart } = useCart();
+  const { Cart, setCart } = useCart();
   const { Auth } = useAuth();
-  const [status, setstatus] = useState(false);
   const [shippingDetails, setshippingDetails] = useState({ email: User.email });
   const products = Cart.map((product) => {
     return {
@@ -56,6 +56,7 @@ const Checkout = () => {
         return "Unknown step";
     }
   };
+
   const confirmOrder = () => {
     const Order = {
       userid: User._id,
@@ -74,8 +75,8 @@ const Checkout = () => {
     privateAxios
       .post("/orders/add", { user: User._id, Order: Order })
       .then((res) => {
-        setstatus(true);
         setactiveStep(2);
+        setCart([]);
       })
       .catch((err) => {
         console.log(err);
