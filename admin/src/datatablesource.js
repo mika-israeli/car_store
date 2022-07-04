@@ -1,3 +1,7 @@
+import { Modal, modalUnstyledClasses } from "@mui/material";
+import { useState } from "react";
+import axios from "./api/axios";
+
 export const userColumns = [
     { field: "id", headerName: "ID", width: 70 },
     {
@@ -38,7 +42,12 @@ export const userColumns = [
       },
     ];
 
+    
+    // const [userRows, setUserRows] = useState([]);
 
+    // axios.get("/users/all").then((res)=>{
+    //   setUserRows(res.data);
+    // })
 
 
 //temporary data until i get from DB
@@ -165,6 +174,15 @@ export const userRows = [
 
   //temporary data until i get from DB
   //tell alon that he needs to add ID to each product
+
+
+  // const [productRows, setProductRows] = useState([]);
+
+  // axios.get("/cars").then((res)=>{
+  //   setProductRows(res.data);
+  // })
+
+
   export const productRows = [
       { id: 1,manufacturer: "Bentley", model: "Arnage", year: 2006, color: "Indigo", kilometers: 65588, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Occ of rail trn/veh inj d/t explosn or fire on train, subs" },
       {id: 2, manufacturer: "Hyundai", model: "Genesis Coupe", year: 2010, color: "Purple", kilometers: 94500, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Nondisp fx of lateral cuneiform of unspecified foot, sequela" },
@@ -187,3 +205,28 @@ export const userRows = [
       // { manufacturer: "Kia", model: "Sorento", year: 2013, color: "Goldenrod", kilometers: 136048, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Bladder disorder, unspecified" },
       // { manufacturer: "Porsche", model: "911", year: 1986, color: "Teal", kilometers: 138302, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Disp fx of less trochanter of unsp femr, 7thN" },
   ];
+
+
+  export const orderColumns = [
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "userid", headerName: "userID", width: 70 },
+    { field: "items", headerName: "Product", width: 130 },
+    { field: "date", headerName: "date", width: 130 },
+    { field: "amount", headerName: "amount", width: 70 },
+    {field: "status",
+        headerName: "Status",
+        width: 160,
+        renderCell: (params) => {
+          return (
+            <div className={`cellWithStatus ${params.row.status}`}>
+              {params.row.status}
+            </div>
+          );
+        }
+      }
+
+
+
+  ]
+
+  // export default userRows;

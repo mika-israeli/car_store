@@ -3,6 +3,8 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { userColumns, userRows, productColumns, productRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 
+
+
 const Datatable = ({inputs}) => {
 
   const actionColumn=[
@@ -22,14 +24,15 @@ const Datatable = ({inputs}) => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New {inputs === "users"? "User" : "Product"}
-        <Link to={inputs === "users"? "/users/new" : "/products/new"} className="link">
+        {inputs.title}
+        <Link to={inputs.link} className="link">
           Add New
         </Link>
       </div>
  <DataGrid
-        rows={inputs === "users"? userRows : productRows}
-        columns={inputs === "users"? userColumns.concat(actionColumn) : productColumns.concat(actionColumn)}
+        getRowId={(row) => row._id}
+        rows={inputs.dataRows}
+        columns={inputs.dataColumn.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
