@@ -12,6 +12,8 @@ import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import UserRecommendation from "../components/UserRecommendation";
+import FacebookLogin from "react-facebook-login";
+import { FacebookShareButton, FacebookIcon } from "react-share";
 const Checkout = () => {
   const [activeStep, setactiveStep] = useState(0);
   const { User } = useUser();
@@ -48,9 +50,14 @@ const Checkout = () => {
         return <Review shippingDetails={shippingDetails} products={products} />;
       case 2:
         return (
-          <Alert severity="success">
-            Thank you for your order! you can view your order status <Link to={{ pathname: "/orderhistory" }}>Your orders</Link>
-          </Alert>
+          <Box>
+            <Alert severity="success">
+              Thank you for your order! you can view your order status <Link to={{ pathname: "/orderhistory" }}>Your orders</Link>
+            </Alert>
+            <FacebookShareButton url="https://www.facebook.com/Shop-730745804865220/?ref=pages_you_manage?quote=wow" quote="This is a test from facebook" hashtag="#shop">
+              Share this on facebook: <FacebookIcon size={32} round />
+            </FacebookShareButton>
+          </Box>
         );
       default:
         return "Unknown step";
