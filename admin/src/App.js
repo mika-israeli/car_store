@@ -28,17 +28,45 @@ function App() {
    setUserRows(res.data);
  });
 
- axios.get("/orders").then((res)=>{
+ axios.get("/orders/all").then((res)=>{
    setOrderRows(res.data);
  });
 
   }  ,[])
 
-console.log(orderRows);
 
-//stats - talk to alon bc he need to make a controller for stats
+
 // const januaryStats = getAllOrdersInDateRange("01/01/2022", "01/02/2022");
 // console.log( "januatu sold" + januaryStats);
+
+//stats
+const [weeklyErnings, setWeeklyErnings] = useState([]);
+const [yearlySalesPerMonth , setYearlySalesPerMonth] = useState([]);
+const [dailySales , setDailySales] = useState([]);
+const [mostSoldCars , setMostSoldCars] = useState([]);
+
+useEffect(()=>{
+  axios.get("/statistics/weeklySales").then((res)=>{
+    setWeeklyErnings(res.data);
+  });
+
+  axios.get("/statistics/yearlySalesPerMonth").then((res)=>{
+    setYearlySalesPerMonth(res.data);
+  });
+
+  axios.get("/statistics/todaySales").then((res)=>{
+    setDailySales(res.data);
+  });
+
+  
+  axios.get("/statistics/mostSoldCars").then((res)=>{
+    setMostSoldCars(res.data);
+  });
+
+
+  }  ,[])
+
+  console.log(mostSoldCars);
 
 
   return (
@@ -46,7 +74,7 @@ console.log(orderRows);
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route index element={<Home />} />
+          <Route index element={<Home inputs={{userAmount: userRows.length, orderAmount: orderRows.length, erningsAmount: weeklyErnings.total, yearlySalesPerMonth: yearlySalesPerMonth, mostSoldCars: mostSoldCars}}/>} />
           <Route path="login" element={<Login />} />
           <Route path="users" >
             <Route index element={<List inputs={{title: "Add new User",link: "/users/new",dataRows:userRows, dataColumn:userColumns }}/> }/>
