@@ -24,6 +24,7 @@
     "passport": "^0.6.0",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
-    "tsoa": "^4.1.0"
+    "tsoa": "^4.1.0",
+    "uuid": "^8.3.2"
   }
 }

@@ -31,6 +31,7 @@ const pages = [
   { name: "Home", icon: <HomeTwoToneIcon />, link: "/home" },
   { name: "Cars", icon: <DirectionsCarTwoToneIcon />, link: "/cars" },
   { name: "Contact us", icon: <ConnectWithoutContactTwoToneIcon />, link: "/contact" },
+  {}
 ];
 
 const pagesNotLoggedIn = [
