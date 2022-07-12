@@ -3,8 +3,25 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Nevbar from "../../components/nevbar/Nevbar";
 import Chart from "../../components/chart/Chart";
 import List from "../../components/table/Table";
+import { matchRoutes, useLocation } from "react-router-dom"
+import { useEffect, useState } from "react";
 
-const Single = () => {
+
+
+
+
+
+const Single = ({inputs}) => {
+
+    const location = useLocation();
+    const locationArr = location.pathname.split("/");
+    const id = locationArr[locationArr.length -1];
+
+
+
+
+  console.log(locationArr[locationArr.length -1]);
+
   return (
     <div className="single">
       <Sidebar />
@@ -44,7 +61,7 @@ const Single = () => {
             </div>
           </div>
           <div className="right">
-            <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" />
+            <Chart aspect={3 / 1} title="User Spending ( Last 6 Months)" inputs={inputs}/>
           </div>
         </div>
         <div className="bottom">

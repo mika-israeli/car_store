@@ -34,7 +34,7 @@ function App() {
 
   }  ,[])
 
-
+// console.log(userRows);
 
 // const januaryStats = getAllOrdersInDateRange("01/01/2022", "01/02/2022");
 // console.log( "januatu sold" + januaryStats);
@@ -44,6 +44,9 @@ const [weeklyErnings, setWeeklyErnings] = useState([]);
 const [yearlySalesPerMonth , setYearlySalesPerMonth] = useState([]);
 const [dailySales , setDailySales] = useState([]);
 const [mostSoldCars , setMostSoldCars] = useState([]);
+const [UserById, setGetUserById] = useState([]);
+
+
 
 useEffect(()=>{
   axios.get("/statistics/weeklySales").then((res)=>{
@@ -64,30 +67,68 @@ useEffect(()=>{
   });
 
 
+
+
   }  ,[])
 
-  console.log(mostSoldCars);
+  // const getUser = ({params}) =>{
+  //   axios.get(`/find/${params.id}`).then((res)=>{
+  //     setGetUserById(res.data);
+  //   })};
+
+  // console.log(yearlySalesPerMonth);
+
 
 
   return (
+    
     <div className="App">
     <BrowserRouter>
       <Routes>
         <Route path="/">
-          <Route index element={<Home inputs={{userAmount: userRows.length, orderAmount: orderRows.length, erningsAmount: weeklyErnings.total, yearlySalesPerMonth: yearlySalesPerMonth, mostSoldCars: mostSoldCars}}/>} />
+          <Route index element={<Home inputs={{
+         userAmount: userRows.length,
+         orderAmount: orderRows.length,
+         erningsAmount: weeklyErnings.total,
+         yearlySalesPerMonth: yearlySalesPerMonth,
+         mostSoldCars: mostSoldCars,
+         dailySales: dailySales,
+          target: 500000
+      }} />} />
+
           <Route path="login" element={<Login />} />
           <Route path="users" >
-            <Route index element={<List inputs={{title: "Add new User",link: "/users/new",dataRows:userRows, dataColumn:userColumns }}/> }/>
-            <Route path=":userId" element={<Single />} />
+            <Route index element={<List inputs={{
+              title: "Add new User",
+              link: "/users/new",
+              dataRows:userRows,
+              dataColumn:userColumns
+               }}/> }/>
+            <Route path=":userId" element={<Single inputs={{
+               yearlySalesPerMonth: yearlySalesPerMonth,
+            }}/>} />
+
             <Route path="new" element={<New inputs={userInputs} title="Add new User"/>} />
           </Route>
           <Route path="products" >
-            <Route index element={<List inputs={{title: "Add new Product",link: "/products/new",dataRows: productRows, dataColumn: productColumns }}/>}/>
-            <Route path=":productId" element={<Single />} />
+            <Route index element={<List inputs={{
+              title: "Add new Product",
+              link: "/products/new",
+              dataRows: productRows,
+               dataColumn: productColumns
+               }}/>}/>
+            <Route path=":productId" element={<Single inputs={{
+               yearlySalesPerMonth: yearlySalesPerMonth,
+            }}/>} />
             <Route path="new" element={<New inputs={productInputs} title="Add new Product"/>} />
           </Route>
           <Route path="orders" >
-          <Route index element={<Orders inputs={{title: "Add new Order",link: "/orders/new",dataRows: orderRows, dataColumn: orderColumns }}/>}/>
+          <Route index element={<Orders inputs={{
+            title: "Add new Order",
+            link: "/orders/new",
+            dataRows: orderRows,
+            dataColumn: orderColumns
+              }}/>}/>
           <Route path="new" element={<New inputs={orderInput} title="Add new Order"/>} />
           </Route>
         </Route>

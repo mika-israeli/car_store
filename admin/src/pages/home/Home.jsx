@@ -18,7 +18,7 @@ const Home = ({inputs}) => {
           <Widget type= "earning" inputs={inputs}/>
          </div>
          <div className="charts">
-          <Featured/>
+          <Featured inputs={inputs}/>
           <Chart title="Last 6 Months (Revenue)" aspect={2/1} inputs={inputs}/>
          </div>
          <div className="listContainer">

@@ -10,7 +10,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 const Nevbar = () => {
   return (
     <div className="navbar">
-      <div className="wrapper">
+      {/* <div className="wrapper">
         <div className="search">
           <input type="text" placeholder="Search..."/>
           <SearchOutlinedIcon />
@@ -37,7 +37,7 @@ const Nevbar = () => {
           <div className="item">
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
