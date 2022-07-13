@@ -7,18 +7,39 @@ import {
     Tooltip,
     ResponsiveContainer,
   } from "recharts";
+import { mergeBreakpointsInOrder } from "@mui/system";
 
 
-  const data = [
-    { name: "January", Total: 1200 },
-    { name: "February", Total: 2100 },
-    { name: "March", Total: 800 },
-    { name: "April", Total: 1600 },
-    { name: "May", Total: 900 },
-    { name: "June", Total: 1700 },
-  ];
 
-const Chart = ({aspect, title}) => {
+
+const Chart = ({aspect, title, inputs}) => {
+  const data = [];
+
+  //we need to add month data 
+
+  for(let i = 0; i<inputs.yearlySalesPerMonth.length; i++){
+    switch(inputs.yearlySalesPerMonth[i]._id){
+      case 1: data.push({name: "January", Total: inputs.yearlySalesPerMonth[i].total});break;
+      case 2: data.push({ name: "February", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 3: data.push({ name: "January", Total: inputs.yearlySalesPerMonth[i].total }); break;
+      case 4: data.push({ name: "March", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 5: data.push({ name: "April", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 6: data.push({ name: "June", Total: inputs.yearlySalesPerMonth[i].total }); break;
+      case 7: data.push({ name: "July", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 8: data.push({ name: "August", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 9: data.push({ name: "September", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 10: data.push({ name: "October", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 11: data.push({ name: "November", Total: inputs.yearlySalesPerMonth[i].total });break;
+      case 12: data.push({ name: "December", Total: inputs.yearlySalesPerMonth[i].total });break;
+      default: break;
+
+    }
+  }
+
+  // data.push({ name: "December", Total: 540000 });
+  // data.push({ name: "February", Total: 45000});
+
+
   return (
     <div className="chart">
     <div className="title">{title}</div>
