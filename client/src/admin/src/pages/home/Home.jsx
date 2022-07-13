@@ -6,25 +6,24 @@ import Featured from "../../components/featured/Featured"
 import Chart from "../../components/chart/Chart"
 import Table from "../../components/table/Table"
 
-const Home = () => {
+const Home = ({inputs}) => {
   return (
     <div className='home'>
          <Sidebar />
          <div className="homeContainer">
          <Nevbar/>
          <div className="widgets">
-          <Widget type= "user"/>
-          <Widget type= "order"/>
-          <Widget type= "earning"/>
-          <Widget type= "balance"/>
+          <Widget type= "user" inputs={inputs}/>
+          <Widget type= "order" inputs={inputs}/>
+          <Widget type= "earning" inputs={inputs}/>
          </div>
          <div className="charts">
-          <Featured/>
-          <Chart title="Last 6 Months (Revenue)" aspect={2/1}/>
+          <Featured inputs={inputs}/>
+          <Chart title="Last 6 Months (Revenue)" aspect={2/1} inputs={inputs}/>
          </div>
          <div className="listContainer">
-          <div className="listTitle">Latest Transactions</div>
-          <Table/>
+          <div className="listTitle">Most Sold Products</div>
+          <Table inputs={inputs}/>
          </div>
          </div>
         </div>

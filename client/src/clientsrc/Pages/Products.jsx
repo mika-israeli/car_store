@@ -2,7 +2,7 @@ import React from "react";
 import CarFeed from "../components/CarFeed";
 import { useEffect } from "react";
 import { useState } from "react";
-import LeftBar from "../components/LeftBar";
+
 import { Box } from "@mui/material";
 
 const Products = () => {

@@ -4,7 +4,7 @@ import React from "react";
 import CarFeed from "./CarFeed";
 import SelectableList from "./SelectableList";
 import { useState } from "react";
-import Navbar from "./Nav";
+
 import SideBar from "./SideBar";
 const LeftBar = ({ items, onApplyChanges }) => {
   const manufacturers = new Set(items.map((i) => i.manufacturer).sort());

@@ -14,8 +14,7 @@ import { Toaster } from "react-hot-toast";
 import UserSettings from "./Pages/UserSettings";
 import Checkout from "./Pages/Checkout";
 import OrderHistory from "./Pages/OrderHistory";
-import AdminMain from "./admin/src/App";
-//import data from "./mockData";
+
 function App() {
   return (
     <div>
@@ -31,7 +30,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/Contact" element={<Contact />} />
-            <Route path="/admin" element={<AdminMain />} />
+
             {/* private routes */}
             <Route element={<RequireAuth />}>
               <Route path="OrderHistory" element={<OrderHistory />} />

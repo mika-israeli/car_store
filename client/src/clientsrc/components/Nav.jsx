@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Link, useNavigate } from "react-router-dom";
 import DirectionsCarTwoToneIcon from "@mui/icons-material/DirectionsCarTwoTone";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
@@ -182,6 +183,11 @@ const Navbar = () => {
           </Box>
           {Auth.accessToken ? (
             <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center", gap: 3 }}>
+              <Tooltip title={"Admin dashboard"}>
+                <IconButton onClick={() => navigate("/admin")} sx={{ color: "white" }}>
+                  <DashboardIcon />
+                </IconButton>
+              </Tooltip>
               <Tooltip title="Your Cart">
                 <IconButton sx={{ color: "white" }} onClick={() => setdrawerOpen(true)}>
                   <Badge badgeContent={Cart.length} color="info">
