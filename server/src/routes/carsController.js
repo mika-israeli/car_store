@@ -4,9 +4,9 @@ const { carValidationSchema } = require("../validation/validationsSchema");
 const validateSchema = require("../validation/validation");
 const { verifyAuthAdmin } = require("../validation/tokenVerify");
 router.get("/", async (req, res) => {
-  if (req.query) {
-    carService.getWithFilters(req.query.filters, req.query.prices);
-  }
+  // if (req.query) {
+  //   carService.getWithFilters(req.query.filters, req.query.prices);
+  // }
 
   const cars = await carService.getAll();
   res.json(cars);
