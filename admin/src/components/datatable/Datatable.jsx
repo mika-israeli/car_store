@@ -2,16 +2,22 @@ import "./datatable.scss"
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { userColumns, userRows, productColumns, productRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 
-
+// const func = ({params}) => {
+//   console.log(params);
+// }
 
 const Datatable = ({inputs}) => {
 
+ 
+
   const actionColumn=[
-    {field: "action", headerName:"Action", width: 200, renderCell:()=>{
+    {field: "action", headerName:"Action", width: 200, renderCell:(params)=>{
       return(
         <div className="cellAction">
-          <Link to="/users/test" style={{textDecoration: "none"}}>
+          <Link to={`/users/${params.id}`} style={{textDecoration: "none"}}>
+          {/* <Button onClick={()=>{console.log(params.id);}}>Test row</Button> */}
           <div className="viewButton">View</div>
           </Link>
           <div className="deleteButton">Delete</div> 

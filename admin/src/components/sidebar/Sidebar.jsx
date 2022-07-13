@@ -48,43 +48,7 @@ const Sidebar = () => {
                 <span>Orders</span>
             </li>
             </Link>
-            <li>
-                <LocalPostOfficeIcon className="icon"/>
-                <span>Delivery</span>
-            </li>
-            <p className="title" >USEFUL</p>
-            <li>
-                <QueryStatsIcon className="icon"/>
-                <span>Stats</span>
-            </li>
-            <li>
-                <NotificationsActiveIcon className="icon"/>
-                <span>Notifications</span>
-            </li>
-            <p className="title">SERVICE</p>
-            <li>
-                <LogoDevIcon className="icon"/>
-                <span>logs</span>
-            </li>
-            <li>
-                <SettingsIcon className="icon"/>
-                <span>Settings</span>
-            </li>
-            <p className="title">USER</p>
-            <li>
-                <AccountBoxIcon className="icon"/>
-                <span>Profile</span>
-            </li>
-            <li>
-                <LogoutIcon className="icon"/>
-                <span>Logout</span>
-            </li>
         </ul>
-        </div>
-        <div className="bottom">
-            <div className="colorOption"></div>
-            <div className="colorOption"></div>
-            
         </div>
     </div>
   )

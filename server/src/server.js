@@ -7,7 +7,7 @@ const app = express();
 const port = 5000;
 dotenv.config();
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000", exposedHeaders: "auth-token" }));
+app.use(cors({ credentials: true, origin: ["http://localhost:3001","http://localhost:3000"] , exposedHeaders: "auth-token" }));
 app.use(express.json());
 app.use(bodyParser.json());
 //db connection --------------------------------------------------------------

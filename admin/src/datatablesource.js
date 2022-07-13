@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "./api/axios";
 
 export const userColumns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "_id", headerName: "ID", width: 100 },
     {
       field: "user",
       headerName: "User",
@@ -208,7 +208,7 @@ export const userRows = [
 
 
   export const orderColumns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "_id", headerName: "ID", width: 100 },
     { field: "userid", headerName: "userID", width: 70 },
     { field: "items", headerName: "Product", width: 130 },
     { field: "date", headerName: "date", width: 130 },
