@@ -12,4 +12,9 @@ carService.getOrderItems = async (ids) => {
     .populate("items")
     .exec();
 };
+carService.getWithFilters = async (filters, prices) => {
+  //paramatarize the filters
+  console.log(filters[0]);
+  let query = {};
+};
 module.exports = carService;

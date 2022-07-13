@@ -34,4 +34,9 @@ router.get("/weeklySales", async (req, res) => {
   const result = await statistisService.weeklySales();
   res.json(result);
 });
+
+router.get("lastFiveOrders", async (req, res) => {
+  const result = await statistisService.LastFiveOrders();
+  res.json(result);
+});
 module.exports = router;
