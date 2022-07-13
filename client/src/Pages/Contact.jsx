@@ -21,11 +21,10 @@ const Map = () => {
   return (
     <Box sx={{ width: "100%", height: "100%" }} display="flex" justifyContent={"center"} flexDirection={"column"} alignItems={"center"}>
       <Typography variant={"h4"}>Contact us</Typography>
-      <Typography variant={"body1"}>
-        Our address is: <br />
-        <Typography variant={"body2"}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum quibusdam ab, quasi soluta labore consequatur. Quibusdam rem autem natus tempora, animi architecto a dolorum molestias, obcaecati aperiam alias totam illum.
-        </Typography>
+      <Typography variant={"h6"}>
+        Our address
+        <Typography variant={"body2"}>Eli vizel 2, rishon lezion</Typography>
+        <Typography variant={"body2"}>03-5555555</Typography>
       </Typography>
       {markers && (
         <GoogleMap zoom={15} center={{ lat: 31.970050939595765, lng: 34.772715385506295 }} mapContainerStyle={{ width: 500, height: 500 }}>

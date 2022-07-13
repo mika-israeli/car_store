@@ -7,30 +7,32 @@ import FacebookLogin from "react-facebook-login";
 import { FacebookShareButton, FacebookIcon } from "react-share";
 const Home = () => {
   const value = useContext(AuthContext);
-  const responseFacebook = (response) => {
-    console.log(response);
-  };
+
   return (
-    <Box component="main" sx={{ display: "flex", alignContent: "center", justifyContent: "center", flexDirection: "column" }}>
-      <Typography variant="h4" component="h1" sx={{ textAlign: "center" }}>
-        Welcome to our dealership
-      </Typography>
-      <Typography variant="h6" component="h2" sx={{ textAlign: "center" }}>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis ipsum distinctio corrupti molestias possimus doloribus consequatur sequi, aliquid iusto tempora tenetur, totam numquam quia repellendus inventore quos ex adipisci? Quas.
-      </Typography>
-      <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/z4YQeGeNdPk"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-      <FacebookLogin appId="730745804865220" callback={responseFacebook} fields="name,email,picture"></FacebookLogin>
-      <FacebookShareButton url="https://www.facebook.com/Shop-730745804865220/?ref=pages_you_manage?quote=wow" quote="This is a test from facebook" hashtag="#shop">
-        <FacebookIcon size={32} round />
-      </FacebookShareButton>
+    <Box width={"100%"} display="flex" justifyContent={"center"}>
+      <Box display={"flex"} width={"50%"} flexDirection={"column"} alignItems="center" gap={5}>
+        <Typography variant="h4" component="h1">
+          Welcome to our dealership
+        </Typography>
+        <Typography variant="body1" component="h2">
+          The Levy Car Agencies Agency has been in the automotive market since 1972, and has a great reputation of satisfied and returning customers. The Levi Agencies Car Dealership is located in the city of Rishon Lezion on 10 Lishansky Street in
+          the new industrial zone in Rishon Letzion. The Levi Agencies Car Dealership specializes in selling cars from private ownership, and our vehicles at the dealership come from individuals. Cars from private ownership are vehicles that were not
+          leased out or rented out by rental companies, and private vehicles are usually reserved better and treated better than vehicles that were in the various car companies. Here at Levi Agencies Car Dealership, you can find a variety of vehicles
+          for sale, we hold all types of vehicles in our stock, such as private cars, mini cars, hybrid vehicles, commercial vehicles, manual vehicles, jeeps, work vehicles and more... There are many payment options available at the Levi Agencies Car
+          Dealership: payment for the vehicle with checks, payment for the vehicle with a 100 percent financing, cash payment, direct debit payment, and, of course, bank transfer. At Levi Agencies Car Dealership, you can sell us your car, lease it
+          out, or make a trade-in deal with it. All the vehicles we sell have warrantees according to the company's regulations and according to the type of vehicle purchased from us. If you have decided to sell or buy a car and / or carry out a
+          trade-in deal for your car, you are invited to come to Levi Agencies Car Dealership and make a transaction that is convenient and reliable!{" "}
+        </Typography>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/3U7qUXPtXnA"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </Box>
     </Box>
   );
 };

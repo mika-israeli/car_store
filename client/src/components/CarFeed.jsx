@@ -5,6 +5,7 @@ import { Button, Drawer, Grid, MenuItem, Pagination, Select } from "@mui/materia
 import { Box } from "@mui/system";
 import LeftBar from "./LeftBar";
 import SearchBar from "./SearchBar";
+import axios from "../api/axios";
 const CarFeed = ({ items }) => {
   const [sort, setSort] = useState("manufacturer");
   const sortParameters = ["price - high to low", "price - low to high", "manufacturer", "year"];
@@ -27,7 +28,20 @@ const CarFeed = ({ items }) => {
         return items;
     }
   };
+  const onFilterFromBackend = (filters, prices) => {
+    axios
+      .get("/cars", {
+        params: {
+          filters: JSON.stringify(filters),
+          prices: JSON.stringify(prices),
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
   const onApplyChanges = (filters, prices) => {
+    onFilterFromBackend(filters, prices);
     const filteredItems = items
       .filter((i) => {
         if (filters.length === 0) {
@@ -89,8 +103,8 @@ const CarFeed = ({ items }) => {
         </Box>
       </Box>
       <SearchBar onSearch={setSearchQuery} />
-      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 0, maxWidth: "80%", alignItems: "center", gap: "10px", justifyContent: "center" }}>
-        <Grid container justifyContent="flex-start" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 5, md: 5 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 0, maxWidth: "80%", alignItems: "center", gap: "1px", justifyContent: "center" }}>
+        <Grid container justifyContent="center" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 5, md: 5 }}>
           {renderArray.map((car) => {
             return (
               <Grid item>

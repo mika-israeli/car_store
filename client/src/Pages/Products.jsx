@@ -15,7 +15,7 @@ const Products = () => {
   }, []);
 
   return (
-    <Box display="flex" justifyContent="center">
+    <Box display="flex" justifyContent="center" alignItems={"center"}>
       {data && <CarFeed items={data} />}
     </Box>
   );

@@ -29,11 +29,11 @@ function App() {
             <Route path="/Home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/Contact" element={<Contact />} />
             {/* private routes */}
             <Route element={<RequireAuth />}>
               <Route path="OrderHistory" element={<OrderHistory />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/Contact" element={<Contact />} />
               <Route path="/settings" element={<UserSettings />} />
             </Route>
           </Route>
