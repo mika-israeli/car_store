@@ -4,7 +4,7 @@ import Nevbar from "../../components/nevbar/Nevbar";
 import Chart from "../../components/chart/Chart";
 import List from "../../components/table/Table";
 import { matchRoutes, useLocation } from "react-router-dom"
-import { useEffect, useState } from "react";
+
 
 
 
@@ -16,12 +16,25 @@ const Single = ({inputs}) => {
     const location = useLocation();
     const locationArr = location.pathname.split("/");
     const id = locationArr[locationArr.length -1];
+    let user;
+    let orders = []
+    
+    for (let i=0; i<inputs.userRows.length ; i++){
+       if (inputs.userRows[i]._id == id){
+            user = inputs.userRows[i];
+       }
+    }
+
+    for (let i=0; i<inputs.orderRows.length ; i++){
+      if (inputs.orderRows[i].userid == id){
+          orders.push(inputs.orderRows[i]);
+      }
+   }
+
+    // console.log(orders);
 
 
-
-
-  console.log(locationArr[locationArr.length -1]);
-
+  
   return (
     <div className="single">
       <Sidebar />
@@ -32,30 +45,21 @@ const Single = ({inputs}) => {
             <div className="editButton">Edit</div>
             <h1 className="title">Information</h1>
             <div className="item">
-              <img
-                src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-                alt=""
-                className="itemImg"
-              />
               <div className="details">
-                <h1 className="itemTitle">Jane Doe</h1>
+                <h1 className="itemTitle">{user.username}</h1>
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
-                  <span className="itemValue">janedoe@gmail.com</span>
+                  <span className="itemValue">{user.email}</span>
                 </div>
                 <div className="detailItem">
-                  <span className="itemKey">Phone:</span>
-                  <span className="itemValue">+1 2345 67 89</span>
-                </div>
-                <div className="detailItem">
-                  <span className="itemKey">Address:</span>
+                  <span className="itemKey">Created At:</span>
                   <span className="itemValue">
-                    Elton St. 234 Garden Yd. NewYork
+                    {user.createdAt}
                   </span>
                 </div>
                 <div className="detailItem">
-                  <span className="itemKey">Country:</span>
-                  <span className="itemValue">USA</span>
+                  <span className="itemKey">Id:</span>
+                  <span className="itemValue">{user._id}</span>
                 </div>
               </div>
             </div>

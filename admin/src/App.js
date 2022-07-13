@@ -78,7 +78,7 @@ useEffect(()=>{
 
   // console.log(yearlySalesPerMonth);
 
-
+console.log(orderRows);
 
   return (
     
@@ -93,6 +93,7 @@ useEffect(()=>{
          yearlySalesPerMonth: yearlySalesPerMonth,
          mostSoldCars: mostSoldCars,
          dailySales: dailySales,
+         orderRows: orderRows,
           target: 500000
       }} />} />
 
@@ -106,6 +107,8 @@ useEffect(()=>{
                }}/> }/>
             <Route path=":userId" element={<Single inputs={{
                yearlySalesPerMonth: yearlySalesPerMonth,
+               userRows: userRows,
+               orderRows: orderRows,
             }}/>} />
 
             <Route path="new" element={<New inputs={userInputs} title="Add new User"/>} />
