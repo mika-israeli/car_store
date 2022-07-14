@@ -14,20 +14,19 @@ router.get("/all", async (req, res) => {
   res.json(orders);
 });
 
-router.post("/add", orderValidationSchema, validateSchema, verifyAuth, async (req, res) => {
+router.post("/add", orderValidationSchema, async (req, res) => {
   const order = await orderService.add(req.body.Order);
   res.json(order);
   // res.status(200).json({ message: "Order added successfully" });
 });
 
-router.patch("/:id", orderValidationSchema, validateSchema, verifyAuth, async (req, res) => {
+router.patch("/:id", orderValidationSchema, async (req, res) => {
   const order = await orderService.update(req.params.id, req.body);
   res.json(order);
 });
 
 router.delete(
   "/:id",
-  verifyAuth,
   async (req, res) => {
     const order = await orderService.remove(req.params.id);
     res.json(order);

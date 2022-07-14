@@ -1,4 +1,4 @@
-.table {
+
   .cellWrapper {
     display: flex;
     align-items: center;
@@ -16,13 +16,12 @@
     padding: 5px;
     border-radius: 5px;
 
-    &.approved {
+    &.Approved {
       color: green;
       background-color: rgba(0, 128, 0, 0.151);
     }
-    &.pending {
+    &.Pending {
       color: goldenrod;
       background-color: rgba(189, 189, 3, 0.103);
     }
   }
-}

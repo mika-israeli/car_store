@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 
 const List = ({inputs, orders}) => {
     const rows = orders;
-    console.log(rows);
+    // console.log(rows);
 
       return (
         <TableContainer component={Paper} className="table">

@@ -9,7 +9,8 @@ import Paper from "@mui/material/Paper";
 
 const OrderList = ({order}) => {
     const rows = order;
-    console.log(rows);
+    // console.log(rows);
+    console.log(rows.status);
 
       return (
         <TableContainer component={Paper} className="table">
@@ -31,9 +32,9 @@ const OrderList = ({order}) => {
                   <TableCell className="tableCell">{row.model}</TableCell>
                   <TableCell className="tableCell">{row.description}</TableCell>
                   <TableCell className="tableCell">{row.price}</TableCell>
-                  {/* <TableCell className="tableCell">
-                    <span className={`status ${row.status}`}>{row.status}</span>
-                  </TableCell> */}
+                  <TableCell className="tableCell">
+                    <span className={`status ${rows.status}`}>{rows.status}</span>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
