@@ -19,7 +19,7 @@ const Widget = ({type, inputs}) => {
             data={
                 title:"USERS",
                 isMoney: false,
-                link: <Link to="/users" style={{textDecoration: "none"}}>See all users</Link>,
+                link: <Link to="/admin/users" style={{textDecoration: "none"}}>See all users</Link>,
                 amount: inputs.userAmount,
                 icon:<PersonOutlineIcon className="icon" style={
                     {color:"crimson",
@@ -33,7 +33,7 @@ const Widget = ({type, inputs}) => {
             data = {
                 title: "ORDERS",
                 isMoney: false,
-                link: <Link to="/orders" style={{textDecoration: "none"}}>See all orders</Link>,
+                link: <Link to="/admin/orders" style={{textDecoration: "none"}}>See all orders</Link>,
                 amount: inputs.orderAmount,
                 icon:<ShoppingCartIcon className="icon" style={
                     {color:"goldenrod",
@@ -45,7 +45,6 @@ const Widget = ({type, inputs}) => {
             data = {
             title: "EARNINGS",
             isMoney: true,
-            link: "View net earnings",
             amount: inputs.erningsAmount,
             icon: <AttachMoneyIcon className="icon" style={
                 {color:"green",

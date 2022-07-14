@@ -22,7 +22,7 @@ const Home = ({inputs}) => {
           <Chart title="Last 6 Months (Revenue)" aspect={2/1} inputs={inputs}/>
          </div>
          <div className="listContainer">
-          <div className="listTitle">Most Sold Products</div>
+          <div className="listTitle">Latest Transactions</div>
           <Table inputs={inputs}/>
          </div>
          </div>

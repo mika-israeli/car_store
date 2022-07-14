@@ -4,6 +4,7 @@ import List from "./pages/list/List";
 import Single from "./pages/single/Single";
 import New from "./pages/new/New";
 import Orders from "./pages/orders/Orders";
+import OrderSingle from "./pages/orderSingle/orderSingle"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { orderInput, productInputs, userInputs } from "./formSource";
 import { useEffect, useState } from "react";
@@ -59,14 +60,11 @@ function App() {
     });
   }, []);
 
-  // const getUser = ({params}) =>{
-  //   axios.get(`/find/${params.id}`).then((res)=>{
-  //     setGetUserById(res.data);
-  //   })};
+//update
 
-  // console.log(yearlySalesPerMonth);
 
-  console.log(orderRows);
+
+  // console.log(orderRows);
 
   return (
     <div className="App">
@@ -77,6 +75,7 @@ function App() {
             element={
               <Home
                 inputs={{
+                  from:"users",
                   userAmount: userRows.length,
                   orderAmount: orderRows.length,
                   erningsAmount: weeklyErnings.total,
@@ -85,6 +84,7 @@ function App() {
                   dailySales: dailySales,
                   orderRows: orderRows,
                   target: 500000,
+                  
                 }}
               />
             }
@@ -97,10 +97,10 @@ function App() {
               element={
                 <List
                   inputs={{
-                    title: "Add new User",
-                    link: "/admin/users/new",
+                    title: "User List",
                     dataRows: userRows,
                     dataColumn: userColumns,
+                    from:"users",
                   }}
                 />
               }
@@ -113,6 +113,7 @@ function App() {
                     yearlySalesPerMonth: yearlySalesPerMonth,
                     userRows: userRows,
                     orderRows: orderRows,
+                    from:"users",
                   }}
                 />
               }
@@ -130,6 +131,7 @@ function App() {
                     link: "/admin/products/new",
                     dataRows: productRows,
                     dataColumn: productColumns,
+                    from:"products",
                   }}
                 />
               }
@@ -140,6 +142,7 @@ function App() {
                 <Single
                   inputs={{
                     yearlySalesPerMonth: yearlySalesPerMonth,
+                    from:"products",
                   }}
                 />
               }
@@ -152,10 +155,22 @@ function App() {
               element={
                 <Orders
                   inputs={{
-                    title: "Add new Order",
-                    link: "/orders/new",
+                    from:"orders",
+                    title: "Order List",
                     dataRows: orderRows,
                     dataColumn: orderColumns,
+                  }}
+                />
+              }
+            />
+            <Route
+              path=":orderId"
+              element={
+                <OrderSingle
+                  inputs={{
+                    yearlySalesPerMonth: yearlySalesPerMonth,
+                    orderRows: orderRows,
+                    from:"orders",
                   }}
                 />
               }

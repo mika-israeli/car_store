@@ -16,8 +16,7 @@ const Datatable = ({inputs}) => {
     {field: "action", headerName:"Action", width: 200, renderCell:(params)=>{
       return(
         <div className="cellAction">
-          <Link to={`/users/${params.id}`} style={{textDecoration: "none"}}>
-          {/* <Button onClick={()=>{console.log(params.id);}}>Test row</Button> */}
+          <Link to={`/admin/${inputs.from}/${params.id}`} style={{textDecoration: "none"}}>
           <div className="viewButton">View</div>
           </Link>
           <div className="deleteButton">Delete</div> 
@@ -31,9 +30,6 @@ const Datatable = ({inputs}) => {
     <div className="datatable">
       <div className="datatableTitle">
         {inputs.title}
-        <Link to={inputs.link} className="link">
-          Add New
-        </Link>
       </div>
  <DataGrid
         getRowId={(row) => row._id}
