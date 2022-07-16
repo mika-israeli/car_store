@@ -4,9 +4,9 @@ const { carValidationSchema } = require("../validation/validationsSchema");
 const validateSchema = require("../validation/validation");
 const { verifyAuthAdmin } = require("../validation/tokenVerify");
 router.get("/", async (req, res) => {
-  if (req.query) {
-    carService.getWithFilters(req.query.filters, req.query.prices);
-  }
+  // if (req.query) {
+  //   carService.getWithFilters(req.query.filters, req.query.prices);
+  // }
 
   const cars = await carService.getAll();
   res.json(cars);
@@ -33,7 +33,7 @@ router.patch("/:id", carValidationSchema, verifyAuthAdmin, async (req, res) => {
   res.json(car);
 });
 //TODO: add authentication to this route
-router.delete("/:id", verifyAuthAdmin, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const car = await carService.remove(req.params.id);
   res.json(car);
 });

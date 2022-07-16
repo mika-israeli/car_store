@@ -1,14 +1,15 @@
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import App from "./App";
-import { AuthProvider } from "./Context/AuthProvider";
-import { CartProvider } from "./Context/CartProvider";
-import { UserProvider } from "./Context/UserProvider";
+import App from "./clientsrc/App";
+import { AuthProvider } from "./clientsrc/Context/AuthProvider";
+import { CartProvider } from "./clientsrc/Context/CartProvider";
+import { UserProvider } from "./clientsrc/Context/UserProvider";
 import { theme } from "./theme";
+import AdminMain from "./admin/src/App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const ThemeContext = createContext("dark");
@@ -19,8 +20,10 @@ root.render(
         <UserProvider>
           <CartProvider>
             <ThemeProvider theme={theme}>
+              <CssBaseline />
               <Routes>
                 <Route path="/*" element={<App />}></Route>
+                <Route path="/admin/*" element={<AdminMain />} />
               </Routes>
             </ThemeProvider>
           </CartProvider>
