@@ -18,6 +18,12 @@ const New = ({ inputs, productRows }) => {
   const product = productRows.find(product=>product._id == id);
 
   console.log(product);
+  // document.getElementById('userInput').value
+  const updateObject = ()=>{
+    if (document.getElementsByClassName("userInput-color")[0].value != ""){
+      console.log(document.getElementsByClassName("userInput-color")[0].value);
+    }
+  }
 
   return (
     <div className="new">
@@ -40,14 +46,23 @@ const New = ({ inputs, productRows }) => {
                 <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} style={{ display: "none" }} />
               </div>
 
-              {inputs.map((input) => (
+              {/* {inputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
                   <input type={input.type} placeholder={input.placeholder} />
                 </div>
+              ))} */}
+              
+              {inputs.map((input) => (
+                <div className="formInput" key={input.id}>
+                  <label>{input.label}</label>
+                  <input type={input.type} placeholder={product[input.label]} className={`userInput-${input.label}`} />
+                </div>
+                
               ))}
-              <button>Send</button>
+             
             </form>
+            <button onClick={function (){updateObject();}}>Send</button> 
           </div>
         </div>
       </div>

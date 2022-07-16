@@ -37,7 +37,7 @@ const Chart = ({aspect, title, inputs}) => {
   }
 
   // data.push({ name: "December", Total: 540000 });
-  // data.push({ name: "February", Total: 45000});
+  // data.push({ name: "February", Total: 500000});
 
 
   return (
