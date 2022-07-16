@@ -1,5 +1,5 @@
 import { Box, Button, Drawer, FormControl, Input, InputLabel, Stack } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -9,10 +9,12 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
-
-
+import api from "../api/axios"
+import {useUser} from "../Hooks/useUser"
+import {useAuth} from "../Hooks/useAuth"
 
 const UserSettings = () => {
+
   const [userValues, setValues] = React.useState({
     email: '',
     password: '',
@@ -20,10 +22,16 @@ const UserSettings = () => {
     lastName: '',
     showPassword: false,
   });
-  
+
   const [loading, setLoading] = React.useState(false);
-  function handleClick() {
+
+  const handleClick = async () => {
     setLoading(true);
+    const res = await api.patch("/users/" , {userValues})
+    console.log(res)
+    if (res == "ok"){
+      setLoading(false)
+    }
   }
   
   const handleChange = (prop) => (event) => {
@@ -41,6 +49,8 @@ const UserSettings = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
