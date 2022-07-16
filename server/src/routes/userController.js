@@ -9,6 +9,7 @@ router.patch("/:id", verifyAuth, async (req, res) => {
   }
   try {
     const result = await userService.updateUser(req.params.id, req.body);
+    console.log(result)
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);

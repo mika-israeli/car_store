@@ -9,33 +9,61 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
-import api from "../api/axios"
-import {useUser} from "../Hooks/useUser"
-import {useAuth} from "../Hooks/useAuth"
+import {axiosPrivate} from "../api/axios"
+import useUser from "../Hooks/useUser"
+import useAuth from "../Hooks/useAuth"
+import Swal from 'sweetalert2'
 
 const UserSettings = () => {
-
+  
+  
+  const { User } = useUser();
+  const { Auth } = useAuth();
+  const api = axiosPrivate(Auth.accessToken)
   const [userValues, setValues] = React.useState({
+    username: '',
     email: '',
     password: '',
-    name: '',
-    lastName: '',
-    showPassword: false,
+    showPassword: false
   });
-
+  
   const [loading, setLoading] = React.useState(false);
 
   const handleClick = async () => {
     setLoading(true);
-    const res = await api.patch("/users/" , {userValues})
-    console.log(res)
-    if (res == "ok"){
-      setLoading(false)
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const res = api.patch(`/users/${User._id}` , {...userValues}).then(res =>{
+          if(res.statusText="OK"){
+            Swal.fire(
+              'Saved!', 
+              'Your setting have been modifide',
+              'success'
+            )
+            setLoading(false)
+          }
+          else{
+            Swal.fire(
+              'Oops!',
+              'server comunication error',
+              'error'
+            )
+          }
+      }).catch(err => console.log(err))
+      }
+    })
+  
   }
   
   const handleChange = (prop) => (event) => {
-    console.log(event.target.value)
     setValues({ ...userValues, [prop]: event.target.value });
   };
 
@@ -53,22 +81,17 @@ const UserSettings = () => {
   
 
   return (
-    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div style={{margin:"100px"}}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap' , justifyContent: 'center' ,gap:'50px',}}>
     <div>
-    <h3>User Settings</h3>
+    <h1>User Settings</h1>
+    <hr style={{margin:"10px"}}></hr>
       <TextField
-        label="Name"
+        label="New username"
         id="outlined-start-adornment"
         sx={{ m: 1, width: '25ch' }}
-        onChange={handleChange('name')}
+        onChange={handleChange('username')}
        
-      />
-        <TextField
-        label="Last Name"
-        id="outlined-start-adornment"
-        sx={{ m: 1, width: '25ch' }}
-        onChange={handleChange('lastName')}
-
       />
       <br></br>
       <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -126,7 +149,7 @@ const UserSettings = () => {
         />
       </FormControl>
     <LoadingButton
-          style={{margin:"10px"}}
+          style={{margin:"10px 0px 0px 10px", left:"300px"}}
           color="secondary"
           onClick={handleClick}
           loading={loading}
@@ -138,6 +161,7 @@ const UserSettings = () => {
         </LoadingButton>
     </div>
   </Box>
+  </div>
   );
 };
 

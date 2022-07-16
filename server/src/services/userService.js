@@ -19,6 +19,7 @@ const addUser = async (user) => {
   return await newUser.save();
 };
 const updateUser = async (id, user) => {
+  console.log(id,user)
   return await User.findByIdAndUpdate(id, user, { new: true });
 };
 const deleteUser = async (id) => {
