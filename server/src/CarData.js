@@ -1,7 +1,12 @@
+const fs = require('fs'); 
+const parse = require('csv-parser');
+const result = [];
+const filterdCar=[]
+
 const cars = [
   [
     { manufacturer: "Bentley", model: "Arnage", year: 2006, color: "Indigo", kilometers: 65588, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Occ of rail trn/veh inj d/t explosn or fire on train, subs" },
-    { manufacturer: "Hyundai", model: "Genesis Coupe", year: 2010, color: "Purple", kilometers: 94500, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Nondisp fx of lateral cuneiform of unspecified foot, sequela" },
+    { manufacturer: "Hyundai", model: "Genesis Coupe", year: 2010, color: "Purple", kilometers: 94500, image:  "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Nondisp fx of lateral cuneiform of unspecified foot, sequela" },
     { manufacturer: "Ford", model: "Escort", year: 2004, color: "Mauv", kilometers: 124991, image: "http://dummyimage.com/250x250.png/5fa2dd/ffffff", description: "Displ avuls fx tuberosity of unsp calcaneus, init for opn fx" },
     { manufacturer: "Chrysler", model: "Sebring", year: 1998, color: "Teal", kilometers: 122516, image: "http://dummyimage.com/250x250.png/ff4444/ffffff", description: "Superficial foreign body of unspecified finger, subs encntr" },
     { manufacturer: "Ford", model: "Ranger", year: 2011, color: "Mauv", kilometers: 31609, image: "http://dummyimage.com/250x250.png/5fa2dd/ffffff", description: "Pilon fracture of tibia" },
@@ -23,4 +28,4 @@ const cars = [
   ],
 ];
 
-module.exports = cars;
+module.exports = {cars};

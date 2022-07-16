@@ -20,8 +20,18 @@ const service = (model) => {
    * @returns {Promise<*>}
    */
   const add = async (item) => {
+    console.log("adding" + item)
     const newItem = new model(item);
     return await newItem.save();
+  };
+   /**
+   * Creates number of rows in the collection
+   * @param {List<Objects>} dataArray
+   * @returns {Promise<*>}
+   */
+  const addAll = async (items) => {
+    const newItem = model.collection.insertMany(items)
+    return newItem;
   };
   /**
    * updates a document in the collection
@@ -52,7 +62,7 @@ const service = (model) => {
     console.log(field, value);
     return await model.find({ [field]: value });
   };
-  return { getAll, getById, add, update, remove, getByField };
+  return { getAll, getById, add, update, remove, getByField,addAll };
 };
 
 module.exports = service;
