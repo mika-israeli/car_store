@@ -24,6 +24,9 @@
     "passport": "^0.6.0",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
-    "tsoa": "^4.1.0"
+    "tsoa": "^4.1.0",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
+    "concurrently": "^6.0.2"
   }
 }
