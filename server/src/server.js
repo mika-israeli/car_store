@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const server = require("http").createServer(app);
 const port = 5000;
+const socket_port = 9000
 dotenv.config();
 const io = require("socket.io")(server, {
   cors: {
@@ -40,21 +41,21 @@ app.use("/cars", CarRouter);
 app.use("/orders", OrderRouter);
 app.use("/markers", markerRouter);
 app.use("/statistics", staisticsRouter);
-
-
+let AdminService ={
+  socket : null,
+  connect : false
+}
 io.on('connection', (socket) => {
   console.log("Some socket connected... (http)" + socket.id);
 // service admin is coonect 
-  socket.on('serviceAdminSocket',(...arg)=>{
+  socket.on('serviceAdminSocket',()=>{
       AdminService.socket = socket.id;
       AdminService.connect= true;
       console.log("Service Admin connected ! ! ! " );
   });
 
   socket.on("getAdminId" , ()=>{
-      // socket.emit("AdminID",liveSocket[counter])
-      // socket.emit("AdminID",AdminService.socket)
-      socket.emit("AdminID",socket.id)
+      socket.emit("AdminID",AdminService.socket)
   })
 
   socket.on("callUser", (data) => {
@@ -95,6 +96,10 @@ io.on('connection', (socket) => {
 
 
 
+
 app.listen(port, () => {
   console.log("server listining on port :" + port);
+});
+io.listen(socket_port, () => {
+  console.log("server socket listining on port :" + socket_port);
 });

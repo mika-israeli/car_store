@@ -5,6 +5,7 @@ import "./home.scss"
 import Featured from "../../components/featured/Featured"
 import Chart from "../../components/chart/Chart"
 import Table from "../../components/table/Table"
+import Call from "../../../../clientsrc/components/call/Call"
 
 const Home = ({inputs}) => {
   return (
@@ -23,9 +24,10 @@ const Home = ({inputs}) => {
          </div>
          <div className="listContainer">
           <div className="listTitle">Latest Transactions</div>
-          <Table inputs={inputs}/>
+          <Table inputs={inputs} orders={inputs.orderRows}/>
          </div>
          </div>
+         <Call />
         </div>
   )
 }

@@ -45,33 +45,33 @@ export const userInputs = [
   export const productInputs = [
     {
       id: 1,
-      label: "Title",
+      label: "manufacturer",
       type: "text",
-      placeholder: "Apple Macbook Pro",
+      placeholder: "Alfa Romeo",
     },
     {
       id: 2,
-      label: "Description",
+      label: "color",
       type: "text",
       placeholder: "Description",
     },
     {
       id: 3,
-      label: "Category",
+      label: "kilometers",
       type: "text",
-      placeholder: "Computers",
+      placeholder: "1234",
     },
     {
       id: 4,
-      label: "Price",
+      label: "price",
       type: "text",
-      placeholder: "100",
+      placeholder: "$$$",
     },
     {
       id: 5,
-      label: "Stock",
+      label: "year",
       type: "text",
-      placeholder: "in stock",
+      placeholder: "1.2.3.4",
     },
   ];
 

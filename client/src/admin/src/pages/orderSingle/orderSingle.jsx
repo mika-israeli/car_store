@@ -18,16 +18,21 @@ const OrderSingle = ({inputs}) => {
     const location = useLocation();
     const locationArr = location.pathname.split("/");
     const id = locationArr[locationArr.length -1];
-    const order = inputs.orderRows.find(order=>order._id == id);
+    let order = inputs.orderRows.find(order=>order._id == id);
 
 
-  console.log(order);
+  // console.log(order);
 
-  const sendOrder = ()=>{
-    order.status == "pending" ? order.status = "Approved" : order.status = "pending";
-  }
+  const sendOrder = async (state)=>{
+    order.status = state;
+    const res = await axios.patch(`/orders/${id}`, 
+    {
+      status : state
+    }
+    );
+    console.log(res);
+  };
 
-  //need to fix sendorder and to send the result to DB
 
   return (
     <div className="single">
@@ -59,8 +64,19 @@ const OrderSingle = ({inputs}) => {
                   <span className="itemValue">{order.status}</span>
                 </div>
                 <div className="detailItem">
-                  <span className="itemKey">Send order to client?</span>
-                  <input type="checkbox" onClick={sendOrder()}></input>
+                  {/* <input type="checkbox" onClick={sendOrder()}></input> */}
+                  <div className="dropdown">
+                <button className="dropbtn">{order.status}
+                  <i className="fa fa-caret-down"></i>
+                </button>
+                <div className="dropdown-content">
+                  <div className={`status ${order.status}`} >
+                  <a href="#" onClick={function (){sendOrder("approved");}}>approved</a>
+                  <a href="#" onClick={function (){sendOrder("pending");}}>pending</a>
+                  <a href="#" onClick={function (){sendOrder("declined");}}>declined</a>
+                  </div>
+                </div>
+              </div>
                 </div>
               </div>
             </div>

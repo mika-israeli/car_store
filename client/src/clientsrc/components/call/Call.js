@@ -20,7 +20,7 @@ import { io } from "socket.io-client";
 import { message } from "antd";
 import 'react-toastify/dist/ReactToastify.css';
 import 'animate.css';
-const URL = "http://localhost:9000/";
+const URL = "http://localhost:9000";
 export const socket = io(URL);
 
 
@@ -44,36 +44,46 @@ function Call(props) {
 	const [stopDrag , setStopDrag] = useState(true)
 	const [showCantCallingtoast ,setShowCantCallingtoast ] = useState(false)
 
-	const myVideo = useRef(null)
-	const userVideo = useRef(null)
+	const myVideo = useRef()
+	const userVideo = useRef()
 	const connectionRef= useRef()
 
     async function getUserMedia () {
       await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
 			setStream(stream)
-			myVideo.current.srcObject = stream
-			console.log("1")
-			
+			myVideo.current.srcObject = stream	
+			setTryCall(true)
+		
+		}).catch((err) => {
+			console.log(err)
+			showCantgetPermission()
 		})
-		callUser()
-		console.log("2")
     }
 
+
 	useEffect(()=>{
-		//getUserMedia()
+		if(stream && tryCall){
+			callUser()
+		}
+	},[stream,tryCall])
+
+	useEffect(()=>{
 		socket.emit("me")
-	 	socket.on('me', (id) => setMe(id));
-        socket.on('liveSockets',(liveSocket)=>{setLiveSocket(liveSocket);console.log('get live socket ' + liveSocket)})
-		// setInterval(()=>{
-		// 	// socket.emit('getAdminId');
-        //     socket.emit('getLiveUsers');
-		// },1000)
+		socket.on('me', (id) => setMe(id));
+
+		if(window.location.href.includes('admin')){
+			socket.emit("serviceAdminSocket")
+		}else{
+			setInterval(()=>{
+				socket.emit('getAdminId');
+			},1000)
+		}
+		
 		socket.on("AdminID" , (adminId) =>{
             setAdminId(adminId)
 			setAdminAlive(true)
-            console.log(adminId)
 		})
-		  socket.on('AdminNotAvialbe', ()=>{
+		socket.on('AdminNotAvialbe', ()=>{
 			setAdminAlive(false)
 			showCantCalling()
 		})
@@ -89,6 +99,7 @@ function Call(props) {
 				socket.emit("AdminInUse",data.socketfrom);
 			}
 			else{
+				getUserMedia()
 				setReceivingCall(true)
 				setCaller(data.from)
 				setName(data.name)
@@ -97,19 +108,19 @@ function Call(props) {
 		})
 	}, [])
 	
+
+
 	useEffect(() => {
-	
-		if(showCantCallingtoast === true)
-		{console.log("aaa")
+		if(showCantCallingtoast && !window.location.href.includes('admin') )
+		{
 			showCantCalling()
 		}
-
 	},[showCantCallingtoast])
 	
 	const callUser =  () => {
-		console.log("calling")
-      	// getUserMedia()
-		setTryCall(true)
+		// console.log("calling")
+		// console.log(stream)
+		// console.log("Admin Id " + AdminID)
 		if(AdminID !== null && AdminAlive){
 			setCaller(AdminID)
 			const peer = new Peer({
@@ -140,8 +151,6 @@ function Call(props) {
 			console.log(connectionRef.current)
 		}else{
 			setTryCall(false)
-			console.log("tr")
-			// showCantCalling()
 			setShowCantCallingtoast(true)
 			}
 	}
@@ -169,13 +178,6 @@ function Call(props) {
 	}
 
 	const LeaveCall = () => {
-		if(window.location.href.includes('dashboard') && callEnded)
-		{
-			
-			socket.emit('EndCall',caller);
-			window.location.reload(false);
-		}
-		else{
 		socket.emit('EndCall',caller);
 		if(connectionRef)
 			connectionRef.current.destroy()
@@ -183,11 +185,10 @@ function Call(props) {
 		setUserStream(null)
 		setCallAccepted(false)
 		window.location.reload(false);
-		}
 	}
     const showCantCalling = () =>{
 		toast.error('Admin Not Availabe!', {
-			toastId: 'success1',
+			toastId: 'availabe',
 			position: "bottom-right",
 			autoClose: 5000,
 			hideProgressBar: false,
@@ -199,12 +200,47 @@ function Call(props) {
 			});
 			setShowCantCallingtoast(false)
     }
-
+	const showCantgetPermission = () =>{
+			toast.error('Permission problem!', {
+				toastId: 'error',
+				position: "bottom-right",
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme:'dark'
+				});
+				
+		}
 
 	const ShowPhoneButton = () => { // Call Btn  - 3 different style 
-		if(window.location.href.includes('dashboard') ) // Admin Page - return null 
-		{return <div style={{position:'fixed' , zIndex:'100000'}}></div>}
-		else if (true) {  // 
+		if(window.location.href.includes('admin') ) // Admin Page - return null 
+		{	return(
+				<div className="call-button">
+					{callAccepted && !callEnded ? (
+						<Button style={{
+							position: 'fixed',
+							left: '1vw',
+							bottom: '3vh',
+							zIndex: '1000000',
+							textTransform: "none",
+							borderRadius: "0px 0px 20px 20px",
+							backgroundColor: "red",
+							color: "white",
+							float: 'left',
+							width:'13vw',
+							}}
+							variant="contained" color="secondary" onClick={LeaveCall}>
+							End Call
+						</Button>):
+					null
+				}
+				</div>
+			)
+		}
+		else {  // 
 			
 			return(
 			<div className="call-button">
@@ -247,11 +283,11 @@ function Call(props) {
 		) : <div onClick={LeaveCall} style={{
 			position: 'fixed',
 			left: '1.5vw',
-			width:'11vw',
+			width:'12vw',
 			bottom: '3vh',
 			height:'2em',
 			zIndex: '1000000',
-			borderRadius: "20px 0px 0px 20px",
+			borderRadius: "10px 10px 0px 0px",
 			backgroundColor: "white",
 			color: "#009DDC",
 			float: 'left',
@@ -265,6 +301,7 @@ function Call(props) {
 	}
 
 	// 
+
 
 	const AnswerButton = () =>{
 		
@@ -311,10 +348,7 @@ function Call(props) {
 		<div className="container">	
 			<ShowPhoneButton />
 			<AnswerButton />
-			{ 
-				
-					<video  muted ref={myVideo} style={{visibility:callAccepted &&!callEnded ? 'visible': 'hidden' }} />
-			}
+			<video autoPlay ref={myVideo} style={{ visibility: callAccepted && !callEnded ? 'visible' : 'hidden' }} />
 			{
 				callAccepted && !callEnded ?
 					<video playsInline ref={userVideo} autoPlay/> :

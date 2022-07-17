@@ -139,11 +139,9 @@ function App() {
             <Route
               path=":productId"
               element={
-                <Single
-                  inputs={{
-                    yearlySalesPerMonth: yearlySalesPerMonth,
-                    from:"products",
-                  }}
+                <New
+                inputs={productInputs}
+                productRows = {productRows}
                 />
               }
             />
