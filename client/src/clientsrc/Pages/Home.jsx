@@ -5,6 +5,8 @@ import UserRecommendation from "../components/UserRecommendation.jsx";
 import AuthContext from "../Context/AuthProvider";
 import FacebookLogin from "react-facebook-login";
 import { FacebookShareButton, FacebookIcon } from "react-share";
+import Call from '../components/call/Call'
+
 const Home = () => {
   const value = useContext(AuthContext);
 
@@ -33,6 +35,7 @@ const Home = () => {
           allowfullscreen
         ></iframe>
       </Box>
+      <Call />
     </Box>
   );
 };

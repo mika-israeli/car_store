@@ -26,6 +26,7 @@ const Home = ({inputs}) => {
           <Table inputs={inputs} orders={inputs.orderRows}/>
          </div>
          </div>
+         
         </div>
   )
 }
