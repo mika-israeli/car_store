@@ -58,7 +58,7 @@ const service = (model) => {
  *  recives the number of days to go back
  * @param {int} date 
  */
-const removeByDaysBack = async (numOfDays)=>{
+  const removeByDaysBack = async (numOfDays)=>{
     let date = moment().subtract(numOfDays,'days').toDate()
     model.find({Timestamp : {$lte : date}}).remove().exec().then(()=>{
       console.log(`DB reseted seccssefuly to ${date}`)

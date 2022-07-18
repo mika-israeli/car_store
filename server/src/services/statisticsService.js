@@ -78,5 +78,10 @@ const weeklySales = async () => {
   const weeklySales = await orders.aggregate([{ $match: { createdAt: { $gte: weekStart, $lt: weekEnd } } }, { $group: { _id: null, total: { $sum: "$amount" } } }]);
   return weeklySales[0];
 };
+const LastFiveOrders = async () => {
+  //get the last 5 orders
+  const lastFiveOrders = await orders.find().sort({ createdAt: -1 }).limit(5);
+  return lastFiveOrders;
+};
 
-module.exports = { getMostSoldCars, getAllOrdersInDateRange, getYearlySalesPerMonth, getSalesPerMonth, todaySales, weeklySales };
+module.exports = { getMostSoldCars, getAllOrdersInDateRange, getYearlySalesPerMonth, getSalesPerMonth, todaySales, weeklySales, LastFiveOrders };

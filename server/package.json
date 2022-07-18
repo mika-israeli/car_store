@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node ./src/server"
+    
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +32,9 @@
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
     "tsoa": "^4.1.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
+    "concurrently": "^6.0.2"
   }
 }
