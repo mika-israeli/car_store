@@ -179,10 +179,12 @@ function Call(props) {
 
 	const LeaveCall = () => {
 		socket.emit('EndCall',caller);
-		if(connectionRef)
+		if(connectionRef.current){
 			connectionRef.current.destroy()
+		}
 		setCallEnded(true)
 		setUserStream(null)
+		setCaller(null)
 		setCallAccepted(false)
 		window.location.reload(false);
 	}
@@ -312,7 +314,7 @@ function Call(props) {
 					<h1 class="animate__animated animate__swing animate__infinite" style={{color:'white', opacity:'1'}} >{name} is calling...</h1>
 					 <BottomNavigation className="bottom_nav"  >
 					   <BottomNavigationAction  onClick={answerCall} icon={<CallIcon color="success" fontSize="medium" />} />
-					   <BottomNavigationAction   onClick={()=>{LeaveCall()}} icon={<PhoneMissedIcon color="error" fontSize="medium"  /> } />
+					   <BottomNavigationAction   onClick={LeaveCall} icon={<PhoneMissedIcon color="error" fontSize="medium"  /> } />
     				</BottomNavigation>
 				</div>
 			)}

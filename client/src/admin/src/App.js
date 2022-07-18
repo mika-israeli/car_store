@@ -7,6 +7,7 @@ import Orders from "./pages/orders/Orders";
 import OrderSingle from "./pages/orderSingle/orderSingle"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { orderInput, productInputs, userInputs } from "./formSource";
+import Call from "../../clientsrc/components/call/Call";
 import { useEffect, useState } from "react";
 import axios from "./api/axios";
 import { userColumns, productColumns, orderColumns } from "./datatablesource";
@@ -177,6 +178,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
+      <Call />
     </div>
   );
 }
