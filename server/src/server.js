@@ -3,6 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
+const carData = require("./carsRandomData")
+const model = require("./services/carService")
 const app = express();
 const port = 5000;
 dotenv.config();
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 
 connection.once("open", () => {
   console.log("database connetion established");
+  //model.removeByDaysBack(1)
+  //model.addAll(carData)
 });
 //routes------------------------------------------------------
 const AuthRouter = require("./routes/authController");
@@ -27,6 +31,7 @@ const OrderRouter = require("./routes/orderController");
 const UserRouter = require("./routes/userController");
 const markerRouter = require("./routes/markerController");
 const staisticsRouter = require("./routes/statisticsController");
+const carService = require("./services/carService");
 app.use("/auth", AuthRouter);
 app.use("/users", UserRouter);
 app.use("/cars", CarRouter);
