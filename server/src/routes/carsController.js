@@ -27,6 +27,13 @@ router.post("/add", carValidationSchema, validateSchema, async (req, res) => {
   const car = await carService.add(req.body);
   res.json(car);
 });
+
+router.post("/addall", carValidationSchema, validateSchema, async (req, res) => {
+  console.log("got request")
+  const car = await carService.addAll(req.body);
+  res.json(car);
+});
+
 //TODO: add authentication to this route
 router.patch("/:id", carValidationSchema, verifyAuthAdmin, async (req, res) => {
   const car = await carService.update(req.params.id, req.body);
