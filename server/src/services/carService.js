@@ -1,5 +1,5 @@
-const Car = require("../models/car.model");
-const genericService = require("./genericService");
+const Car = require('../models/car.model');
+const genericService = require('./genericService');
 const carService = genericService(Car);
 
 carService.getByType = async (type) => {
@@ -7,7 +7,7 @@ carService.getByType = async (type) => {
 };
 carService.getOrderItems = async (ids) => {
   return await Car.find({ _id: { $in: ids } })
-    .populate("items")
+    .populate('items')
     .exec();
 };
 carService.getWithFilters = async (filters, prices) => {

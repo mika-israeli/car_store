@@ -36,7 +36,7 @@ const Signup = () => {
       return navigate("/login");
     } catch (error) {
       console.log(error.response.data);
-      seterror(error.response.data.message);
+      seterror(error.response.data.error);
     }
   };
   const [user, setuser] = useState({});

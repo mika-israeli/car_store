@@ -56,7 +56,7 @@ const Car = ({ item, addToCart }) => {
       <CardMedia component="img" height="200" image={item.image} alt="car image" />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {item.description} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora neque sequi molestiae doloribus consequuntur excepturi est omnis libero beatae ducimus? Illo distinctio voluptas error maxime deserunt aut ea facere earum.
+          {item.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -99,7 +99,7 @@ const Car = ({ item, addToCart }) => {
                 <TableCell>{item.color}</TableCell>
               </TableRow>
               <TableRow hover>
-                <TableCell> Categories</TableCell>
+                <TableCell> Type</TableCell>
                 <TableCell>{`${item.type}`}</TableCell>
               </TableRow>
               <TableRow hover>
