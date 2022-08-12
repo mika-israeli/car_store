@@ -27,16 +27,15 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import useCart from '../Hooks/useCart';
 import CartPage from './CartPage';
 import toast from 'react-hot-toast';
+import CarsIconMenu from './CarsIconMenu';
 
 const pages = [
   { name: 'Home', icon: <HomeTwoToneIcon />, link: '/home' },
-  { name: 'Cars', icon: <DirectionsCarTwoToneIcon />, link: '/cars' },
   {
     name: 'Contact us',
     icon: <ConnectWithoutContactTwoToneIcon />,
     link: '/contact',
   },
-  {},
 ];
 
 const pagesNotLoggedIn = [
@@ -130,36 +129,9 @@ const Navbar = () => {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size='large'
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleOpenNavMenu}
-              color='inherit'
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id='menu-appbar'
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
+            <Menu id='menu-appbar' open={Boolean(anchorElNav)}>
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.name}>
                   <Typography textAlign='center'>
                     <Button>
                       <IconButton
@@ -214,6 +186,7 @@ const Navbar = () => {
                 </Link>
               </Button>
             ))}
+            <CarsIconMenu />
           </Box>
           {Auth.accessToken ? (
             <Box

@@ -4,15 +4,15 @@ const { carValidationSchema } = require('../validation/validationsSchema');
 const validateSchema = require('../validation/validation');
 const { verifyAuthAdmin } = require('../validation/tokenVerify');
 router.get('/', async (req, res) => {
-  // if (req.query) {
-  //   carService.getWithFilters(req.query.filters, req.query.prices);
-  // }
-
   const cars = await carService.getAll();
   res.json(cars);
 });
 router.get('/type/:type', async (req, res) => {
-  const cars = await carService.getByType(req.params.type);
+  const type = req.params.type;
+  const cars =
+    type === 'all'
+      ? await carService.getAll()
+      : await carService.getByType(type);
   res.json(cars);
 }),
   router.get('/:id', async (req, res) => {

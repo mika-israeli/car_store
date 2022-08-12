@@ -8,18 +8,29 @@ import { useParams } from 'react-router';
 import axios from '../api/axios';
 
 const Products = () => {
-  const [data, setdata] = useState('');
-  const { type } = useParams();
+  const [cars, setcars] = useState('');
+  let { type } = useParams();
+  const url = `/cars`;
   useEffect(() => {
+    const newurl = type === 'all' ? url : `${url}/type/${type}`;
     axios
-      .get(`/cars/type/${type}`)
+      .get(newurl)
       .then((res) => res.data)
-      .then((data) => setdata(data));
+      .then((data) => setcars(data))
+      .then(() => console.log(cars));
   }, []);
+  useEffect(() => {
+    const newurl = type === 'all' ? url : `${url}/type/${type}`;
+    axios
+      .get(newurl)
+      .then((res) => res.data)
+      .then((data) => setcars(data))
+      .then(() => console.log(cars));
+  }, [type]);
 
   return (
     <Box display='flex' justifyContent='center' alignItems={'center'}>
-      {data && <CarFeed items={data} />}
+      {cars && <CarFeed items={cars} />}
     </Box>
   );
 };
