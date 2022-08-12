@@ -1,21 +1,24 @@
-import React from "react";
-import CarFeed from "../components/CarFeed";
-import { useEffect } from "react";
-import { useState } from "react";
+import React from 'react';
+import CarFeed from '../components/CarFeed';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
+import { useParams } from 'react-router';
+import axios from '../api/axios';
 
 const Products = () => {
-  const [data, setdata] = useState("");
+  const [data, setdata] = useState('');
+  const { type } = useParams();
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
-      .then((res) => res.json())
-      .then((res) => setdata(res))
-      .catch((err) => console.log(err));
+    axios
+      .get(`/cars/type/${type}`)
+      .then((res) => res.data)
+      .then((data) => setdata(data));
   }, []);
 
   return (
-    <Box display="flex" justifyContent="center" alignItems={"center"}>
+    <Box display='flex' justifyContent='center' alignItems={'center'}>
       {data && <CarFeed items={data} />}
     </Box>
   );
