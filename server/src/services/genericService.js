@@ -1,4 +1,4 @@
-const moment = require('moment')
+const moment = require('moment');
 
 const service = (model) => {
   /**
@@ -22,17 +22,17 @@ const service = (model) => {
    * @returns {Promise<*>}
    */
   const add = async (item) => {
-    console.log("adding" + item)
+    console.log('adding' + item);
     const newItem = new model(item);
     return await newItem.save();
   };
-   /**
+  /**
    * Creates number of rows in the collection
    * @param {List<Objects>} dataArray
    * @returns {Promise<*>}
    */
   const addAll = async (items) => {
-    const newItem = model.collection.insertMany(items)
+    const newItem = model.collection.insertMany(items);
     return newItem;
   };
   /**
@@ -50,20 +50,25 @@ const service = (model) => {
    * @returns
    */
   const remove = async (id) => {
-    return await model.findByIdAndRemove({manufacturer : id});
+    return await model.findByIdAndRemove({ _id: id });
   };
 
-/**
- *  this function will reset the DB to the number of day's you want to go back in time.
- *  recives the number of days to go back
- * @param {int} date 
- */
-  const removeByDaysBack = async (numOfDays)=>{
-    let date = moment().subtract(numOfDays,'days').toDate()
-    model.find({Timestamp : {$lte : date}}).remove().exec().then(()=>{
-      console.log(`DB reseted seccssefuly to ${date}`)
-    }).catch(err => console.error(err))
-  }
+  /**
+   *  this function will reset the DB to the number of day's you want to go back in time.
+   *  recives the number of days to go back
+   * @param {int} date
+   */
+  const removeByDaysBack = async (numOfDays) => {
+    let date = moment().subtract(numOfDays, 'days').toDate();
+    model
+      .find({ Timestamp: { $lte: date } })
+      .remove()
+      .exec()
+      .then(() => {
+        console.log(`DB reseted seccssefuly to ${date}`);
+      })
+      .catch((err) => console.error(err));
+  };
   /**
    * returns a document where the given field matches the given value
    * @param {String} field
@@ -76,7 +81,16 @@ const service = (model) => {
     console.log(field, value);
     return await model.find({ [field]: value });
   };
-  return { getAll, getById, add, update, remove, getByField,addAll,removeByDaysBack };
+  return {
+    getAll,
+    getById,
+    add,
+    update,
+    remove,
+    getByField,
+    addAll,
+    removeByDaysBack,
+  };
 };
 
 module.exports = service;

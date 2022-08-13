@@ -2,7 +2,7 @@ const router = require('express').Router();
 const carService = require('../services/carService');
 const { carValidationSchema } = require('../validation/validationsSchema');
 const validateSchema = require('../validation/validation');
-const { verifyAuthAdmin } = require('../validation/tokenVerify');
+// const { verifyAuthAdmin } = require('../validation/tokenVerify');
 router.get('/', async (req, res) => {
   const cars = await carService.getAll();
   res.json(cars);
@@ -27,7 +27,8 @@ router.get('/:field/:value', async (req, res) => {
 });
 
 //TODO: add authentication to this route
-router.post('/add', carValidationSchema, validateSchema, async (req, res) => {
+router.post('/add', async (req, res) => {
+  console.log(req.body);
   const car = await carService.add(req.body);
   res.json(car);
 });
@@ -44,12 +45,13 @@ router.post(
 );
 
 //TODO: add authentication to this route
-router.patch('/:id', carValidationSchema, async (req, res) => {
+router.patch('/:id', async (req, res) => {
   const car = await carService.update(req.params.id, req.body);
   res.json(car);
 });
 //TODO: add authentication to this route
 router.delete('/:id', async (req, res) => {
+  console.log(req.params.id);
   const car = await carService.remove(req.params.id);
   res.json(car);
 });

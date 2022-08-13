@@ -1,16 +1,17 @@
-import Home from "./pages/home/Home";
-import Login from "./pages/login/Login";
-import List from "./pages/list/List";
-import Single from "./pages/single/Single";
-import New from "./pages/new/New";
-import Orders from "./pages/orders/Orders";
-import OrderSingle from "./pages/orderSingle/orderSingle"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { orderInput, productInputs, userInputs } from "./formSource";
-import Call from "../../clientsrc/components/call/Call";
-import { useEffect, useState } from "react";
-import axios from "./api/axios";
-import { userColumns, productColumns, orderColumns } from "./datatablesource";
+import Home from './pages/home/Home';
+import Login from './pages/login/Login';
+import List from './pages/list/List';
+import Single from './pages/single/Single';
+import New from './pages/new/New';
+import Orders from './pages/orders/Orders';
+import OrderSingle from './pages/orderSingle/orderSingle';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { orderInput, productInputs, userInputs } from './formSource';
+import Call from '../../clientsrc/components/call/Call';
+import { useEffect, useState } from 'react';
+import axios from './api/axios';
+import { userColumns, productColumns, orderColumns } from './datatablesource';
+import ActualNew from './pages/new/ActualNew';
 
 function App() {
   const [productRows, setProductRows] = useState([]);
@@ -18,15 +19,15 @@ function App() {
   const [orderRows, setOrderRows] = useState([]);
 
   useEffect(() => {
-    axios.get("/cars").then((res) => {
+    axios.get('/cars').then((res) => {
       setProductRows(res.data);
     });
 
-    axios.get("/users/all").then((res) => {
+    axios.get('/users/all').then((res) => {
       setUserRows(res.data);
     });
 
-    axios.get("/orders/all").then((res) => {
+    axios.get('/orders/all').then((res) => {
       setOrderRows(res.data);
     });
   }, []);
@@ -44,39 +45,37 @@ function App() {
   const [UserById, setGetUserById] = useState([]);
 
   useEffect(() => {
-    axios.get("/statistics/weeklySales").then((res) => {
+    axios.get('/statistics/weeklySales').then((res) => {
       setWeeklyErnings(res.data);
     });
 
-    axios.get("/statistics/yearlySalesPerMonth").then((res) => {
+    axios.get('/statistics/yearlySalesPerMonth').then((res) => {
       setYearlySalesPerMonth(res.data);
     });
 
-    axios.get("/statistics/todaySales").then((res) => {
+    axios.get('/statistics/todaySales').then((res) => {
       setDailySales(res.data);
     });
 
-    axios.get("/statistics/mostSoldCars").then((res) => {
+    axios.get('/statistics/mostSoldCars').then((res) => {
       setMostSoldCars(res.data);
     });
   }, []);
 
-//update
-
-
+  //update
 
   // console.log(orderRows);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Routes>
-        <Route path="/">
+        <Route path='/'>
           <Route
             index
             element={
               <Home
                 inputs={{
-                  from:"users",
+                  from: 'users',
                   userAmount: userRows.length,
                   orderAmount: orderRows.length,
                   erningsAmount: weeklyErnings.total,
@@ -85,79 +84,74 @@ function App() {
                   dailySales: dailySales,
                   orderRows: orderRows,
                   target: 500000,
-                  
                 }}
               />
             }
           />
 
-          <Route path="login" element={<Login />} />
-          <Route path="users">
+          <Route path='login' element={<Login />} />
+          <Route path='users'>
             <Route
               index
               element={
                 <List
                   inputs={{
-                    title: "User List",
+                    title: 'User List',
                     dataRows: userRows,
                     dataColumn: userColumns,
-                    from:"users",
+                    from: 'users',
                   }}
                 />
               }
             />
             <Route
-              path=":userId"
+              path=':userId'
               element={
                 <Single
                   inputs={{
                     yearlySalesPerMonth: yearlySalesPerMonth,
                     userRows: userRows,
                     orderRows: orderRows,
-                    from:"users",
+                    from: 'users',
                   }}
                 />
               }
             />
-            
-            <Route path="new" element={<New inputs={userInputs} title="Add new User" />} />
+
+            <Route
+              path='new'
+              element={<New inputs={userInputs} title='Add new User' />}
+            />
           </Route>
-          <Route path="products">
+          <Route path='products'>
             <Route
               index
               element={
                 <List
                   inputs={{
-                    title: "Add new Product",
-                    link: "/admin/products/new",
+                    title: 'Add new Product',
+                    link: '/admin/products/new',
                     dataRows: productRows,
                     dataColumn: productColumns,
-                    from:"products",
+                    from: 'products',
                   }}
                 />
               }
             />
             <Route
-              path=":productId"
-              element={
-                <New
-                inputs={productInputs}
-                productRows = {productRows}
-                />
-              }
+              path=':productId'
+              element={<New inputs={productInputs} productRows={productRows} />}
             />
-            <Route 
-            path="new" 
-            element={<newProduct/>} />
+            <Route path='new' element={<ActualNew inputs={productInputs} />} />
           </Route>
-          <Route path="orders">
+          <Route path='orders'>
             <Route
               index
               element={
                 <Orders
                   inputs={{
-                    from:"orders",
-                    title: "Order List",
+                    from: 'orders',
+                    title: 'Order List',
                     dataRows: orderRows,
                     dataColumn: orderColumns,
                   }}
@@ -165,18 +159,21 @@ function App() {
               }
             />
             <Route
-              path=":orderId"
+              path=':orderId'
               element={
                 <OrderSingle
                   inputs={{
                     yearlySalesPerMonth: yearlySalesPerMonth,
                     orderRows: orderRows,
-                    from:"orders",
+                    from: 'orders',
                   }}
                 />
               }
             />
-            <Route path="new" element={<New inputs={orderInput} title="Add new Order" />} />
+            <Route
+              path='new'
+              element={<New inputs={orderInput} title='Add new Order' />}
+            />
           </Route>
         </Route>
       </Routes>

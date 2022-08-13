@@ -9,22 +9,11 @@ import React from 'react';
 
 //I need to add punctionality to add users here
 
-const New = ({ inputs, productRows }) => {
+const ActualNew = ({ inputs, productRows }) => {
   const [file, setFile] = useState('');
   const location = useLocation();
   const locationArr = location.pathname.split('/');
-  const id = locationArr[locationArr.length - 1];
   const [product, setProduct] = useState({});
-  useEffect(() => {
-    axios
-      .get(`/cars/${id}`)
-      .then((res) => {
-        setProduct(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   console.log(product);
   // document.getElementById('userInput').value
@@ -71,8 +60,10 @@ const New = ({ inputs, productRows }) => {
       car.year = document.getElementsByClassName('userInput-year')[0].value;
     }
 
+    console.log(car);
+
     const res = await axios
-      .patch(`/cars/${id}`, car)
+      .post(`/cars/add`, car)
       .then((res) => {
         console.log(res);
       })
@@ -127,4 +118,4 @@ const New = ({ inputs, productRows }) => {
   );
 };
 
-export default New;
+export default ActualNew;
