@@ -197,14 +197,16 @@ const Navbar = () => {
                 gap: 3,
               }}
             >
-              <Tooltip title={'Admin dashboard'}>
-                <IconButton
-                  onClick={() => navigate('/admin')}
-                  sx={{ color: 'white' }}
-                >
-                  <DashboardIcon />
-                </IconButton>
-              </Tooltip>
+              {User.isAdmin && (
+                <Tooltip title={'Admin dashboard'}>
+                  <IconButton
+                    onClick={() => navigate('/admin')}
+                    sx={{ color: 'white' }}
+                  >
+                    <DashboardIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
               <Tooltip title='Your Cart'>
                 <IconButton
                   sx={{ color: 'white' }}
