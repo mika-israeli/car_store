@@ -19,12 +19,38 @@ const New = ({ inputs, productRows }) => {
 
   console.log(product);
   // document.getElementById('userInput').value
-  const updateObject = ()=>{
+  const updateObject = async()=>{
+    var color, price, manufacturer, kilometers, year;
     if (document.getElementsByClassName("userInput-color")[0].value != ""){
-      console.log(document.getElementsByClassName("userInput-color")[0].value);
+      color = document.getElementsByClassName("userInput-color")[0].value;
     }
-  }
+    if (document.getElementsByClassName("userInput-price")[0].value != ""){
+      price = document.getElementsByClassName("userInput-price")[0].value;
+    }
+    if (document.getElementsByClassName("userInput-manufacturer")[0].value != ""){
+      manufacturer = document.getElementsByClassName("userInput-manufacturer")[0].value;
+    }
+    if (document.getElementsByClassName("userInput-kilometers")[0].value != ""){
+      kilometers = document.getElementsByClassName("userInput-kilometers")[0].value;
+    }
+    if (document.getElementsByClassName("userInput-year")[0].value != ""){
+      year = document.getElementsByClassName("userInput-year")[0].value;
+    }
 
+    console.log("color = "+ color+ "price " + price +"year " + year);
+  
+      const res = await axios.patch(`/cars/${id}`, 
+      {
+        color : color,
+        price: price,
+        manufacturer : manufacturer,
+        kilometers: kilometers,
+        year: year
+      }
+      );
+      console.log(res);
+    };
+  
   return (
     <div className="new">
       <Sidebar />
@@ -46,13 +72,6 @@ const New = ({ inputs, productRows }) => {
                 <input type="file" id="file" onChange={(e) => setFile(e.target.files[0])} style={{ display: "none" }} />
               </div>
 
-              {/* {inputs.map((input) => (
-                <div className="formInput" key={input.id}>
-                  <label>{input.label}</label>
-                  <input type={input.type} placeholder={input.placeholder} />
-                </div>
-              ))} */}
-              
               {inputs.map((input) => (
                 <div className="formInput" key={input.id}>
                   <label>{input.label}</label>
@@ -61,6 +80,7 @@ const New = ({ inputs, productRows }) => {
                 
               ))}
              
+
             </form>
             <button onClick={function (){updateObject();}}>Send</button> 
           </div>

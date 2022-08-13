@@ -119,7 +119,7 @@ function App() {
                 />
               }
             />
-
+            
             <Route path="new" element={<New inputs={userInputs} title="Add new User" />} />
           </Route>
           <Route path="products">
@@ -146,7 +146,9 @@ function App() {
                 />
               }
             />
-            <Route path="new" element={<New inputs={productInputs} title="Add new Product" />} />
+            <Route 
+            path="new" 
+            element={<newProduct/>} />
           </Route>
           <Route path="orders">
             <Route

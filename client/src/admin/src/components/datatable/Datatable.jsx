@@ -39,7 +39,11 @@ const Datatable = ({inputs}) => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        {inputs.title}
+      {inputs.title}
+      
+      {inputs.from === "products" &&  <Link to="/admin/products/new" style={{textDecoration: "none"}} className="link">
+        Add new
+        </Link> }
       </div>
  <DataGrid
         getRowId={(row) => row._id}

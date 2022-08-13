@@ -44,7 +44,7 @@ router.post(
 );
 
 //TODO: add authentication to this route
-router.patch('/:id', carValidationSchema, verifyAuthAdmin, async (req, res) => {
+router.patch('/:id', carValidationSchema, async (req, res) => {
   const car = await carService.update(req.params.id, req.body);
   res.json(car);
 });
