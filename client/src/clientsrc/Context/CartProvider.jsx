@@ -1,25 +1,40 @@
-import { createContext, useState, useEffect } from "react";
-import useUser from "../Hooks/useUser";
+import { createContext, useState, useEffect } from 'react';
+import useUser from '../Hooks/useUser';
 
 const CartContext = createContext({});
 
 export const CartProvider = ({ children }) => {
   const [Cart, setCart] = useState([]);
-  const { User, setUser } = useUser();
+  const { User } = useUser();
   useEffect(() => {
-    localStorage.setItem(User._id, JSON.stringify(Cart));
-    console.log("localstorage cart", JSON.parse(localStorage.getItem(User._id)));
-  }, [Cart]);
+    const lscart = JSON.parse(localStorage.getItem(User._id));
+    if (lscart) {
+      setCart(JSON.parse(localStorage.getItem(User._id)));
+    }
+  }, []);
   useEffect(() => {
     if (User) {
       setCart(JSON.parse(localStorage.getItem(User._id)) || []);
     }
   }, [User]);
   useEffect(() => {
-    console.log("just mounted", JSON.parse(localStorage.getItem(User._id)) || []);
-    setCart(JSON.parse(localStorage.getItem(User._id)) || []);
-  }, []);
-  return <CartContext.Provider value={{ Cart, setCart }}>{children}</CartContext.Provider>;
+    localStorage.setItem(User._id, JSON.stringify(Cart));
+  }, [Cart]);
+  const handleSetCart = (cart) => {
+    setCart(cart);
+  };
+  const addToCart = (product) => {
+    const cart = [...Cart, product];
+    handleSetCart(cart);
+  };
+
+  return (
+    <CartContext.Provider
+      value={{ Cart, setCart: (cart) => handleSetCart(cart), addToCart }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 };
 
 export default CartContext;

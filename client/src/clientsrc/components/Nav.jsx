@@ -56,7 +56,7 @@ const Navbar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [drawerOpen, setdrawerOpen] = useState(false);
   const { Auth, setAuth } = useAuth();
-  const { User } = useUser();
+  const { User, setUser } = useUser();
   const { Cart, setCart } = useCart();
   const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
@@ -74,8 +74,10 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
   const handleLogOut = () => {
+    localStorage.removeItem('auth');
+    localStorage.removeItem('userInfo');
     setAuth({});
-    setCart([]);
+    setUser({});
     toast('Logged out successfully', { type: 'success' });
     navigate('/home');
   };
