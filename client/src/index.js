@@ -10,7 +10,7 @@ import { CartProvider } from "./clientsrc/Context/CartProvider";
 import { UserProvider } from "./clientsrc/Context/UserProvider";
 import { theme } from "./theme";
 import AdminMain from "./admin/src/App";
-
+import './styles.css'
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const ThemeContext = createContext("dark");
 root.render(
