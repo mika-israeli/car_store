@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "../api/axios";
 const Contact = () => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyA0O8293GBz-BD_laLxfx25nxnUr_oK284",
+    googleMapsApiKey:   "AIzaSyDsfuBxyxJAm85IDdX5RPLskB42TM8ZaQc",
+  
   });
   if (!isLoaded) return <Suspense>Loading</Suspense>;
   return <Map />;
