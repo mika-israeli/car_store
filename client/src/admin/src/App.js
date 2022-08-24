@@ -83,7 +83,7 @@ function App() {
                   mostSoldCars: mostSoldCars,
                   dailySales: dailySales,
                   orderRows: orderRows,
-                  target: 500000,
+                  target: 100000,
                 }}
               />
             }

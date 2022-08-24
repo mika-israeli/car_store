@@ -127,7 +127,7 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            Igor Project
+            Car Bazar
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
