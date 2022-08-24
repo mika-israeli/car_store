@@ -5,6 +5,7 @@ import daniel from '../../assets/daniel.jpeg';
 import alon from '../../assets/alon.jpg';
 import shon from '../../assets/shon.jpg';
 import rom from '../../assets/rom.jpg';
+import Canvas from '../components/Canvas';
 
 const Students = () => {
   return (
@@ -12,7 +13,9 @@ const Students = () => {
       <Outlet />
       <div className='center_box'>
         <h1>CAR BAZAR</h1>
+        <Canvas />
       </div>
+
       <div className='partners_containers '>
         <div className='partners fade left'>
           <b>Daniel Ohayon </b>

@@ -17,9 +17,11 @@ import React from 'react';
 
 const Datatable = ({ inputs }) => {
   const deleteOrder = async (id) => {
-    console.log(id);
-    const res = await axios.delete(`/cars/${id}`);
-    console.log(res);
+    let from = window.location.pathname.split('/')[2];
+    if (from == 'products') {
+      from = 'cars';
+    }
+    const res = await axios.delete(`/${from}/${id}`);
   };
 
   const actionColumn = [
@@ -38,16 +40,16 @@ const Datatable = ({ inputs }) => {
                 <div className='viewButton'>View</div>
               )}
             </Link>
-            {inputs.from === 'products' && (
-              <div
-                className='deleteButton'
-                onClick={function () {
-                  deleteOrder(params.id);
-                }}
-              >
-                Delete
-              </div>
-            )}
+
+            <div
+              className='deleteButton'
+              onClick={function () {
+                deleteOrder(params.id);
+              }}
+            >
+              Delete
+            </div>
+
             <Link
               to={`/admin/products/${params.id}`}
               style={{ textDecoration: 'none' }}
