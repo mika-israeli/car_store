@@ -11,11 +11,11 @@ const Students = () => {
   return (
     <main>
       <Outlet />
+
       <div className='center_box'>
         <h1>CAR BAZAR</h1>
         <Canvas />
       </div>
-
       <div className='partners_containers '>
         <div className='partners fade left'>
           <b>Daniel Ohayon </b>
