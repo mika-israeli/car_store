@@ -76,7 +76,7 @@ const Navbar = () => {
   const handleLogOut = () => {
     localStorage.removeItem('auth');
     localStorage.removeItem('userInfo');
-    setAuth({});
+    setAuth({ accessToken: null, isAdmin: false });
     setUser({});
     toast('Logged out successfully', { type: 'success' });
     navigate('/home');

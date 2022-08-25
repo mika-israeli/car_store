@@ -50,7 +50,8 @@ const Car = ({ item }) => {
     setExpanded(!expanded);
   };
   const handleAddCart = () => {
-    if (Object.keys(Auth).length === 0) {
+    console.log(Auth.accessToken != null);
+    if (Auth.accessToken == null) {
       toast.error('Please login to add to cart');
       return;
     }
