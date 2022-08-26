@@ -83,7 +83,6 @@ const Checkout = () => {
             </Alert>
             <FacebookShareButton
               url='https://www.facebook.com/Shop-730745804865220/?ref=pages_you_manage?quote=wow'
-              quote='This is a test from facebook'
               hashtag='#shop'
             >
               Share this on facebook: <FacebookIcon size={32} round />

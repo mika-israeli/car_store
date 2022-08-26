@@ -27,21 +27,19 @@ const Footer = () => {
   }, []);
 
   return (
-    <Box
-      component='footer'
-      sx={{
-        py: 0,
-        px: 0,
-        mt: 'auto',
+    <footer
+      style={{
         background: 'linear-gradient(to right bottom, #430089, white)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         fontFamily: 'monospace',
+        position: 'sticky',
+        bottom: 0,
+        minHeight: '100px',
+        width: '100%',
       }}
-      position='sticky'
-      bottom={0}
     >
       <h2 style={{ color: 'white', fontWeight: 'bold' }}>Crypto Currency</h2>
       {data[0] && (
@@ -86,7 +84,7 @@ const Footer = () => {
         </div>
       )}
       <Call />
-    </Box>
+    </footer>
   );
 };
 
