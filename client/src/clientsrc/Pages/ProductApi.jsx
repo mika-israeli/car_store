@@ -1,5 +1,6 @@
 import axios from "../api/axios";
-import About from "./About";
+import Navbar from "../components/Nav";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -19,6 +20,7 @@ const View = () => {
 
   return (
     <div>
+      <Navbar />
       <div
         style={{
           width: "100%",
@@ -27,20 +29,6 @@ const View = () => {
         }}
       >
         <h1>products from api</h1>
-        <Link to="/home">
-          <button
-            style={{
-              //put the button in the left of the page
-              display: "flex",
-              flexDirection: "left",
-              border: "3px solid purple",
-              backgroundColor: "pink",
-              color: "black",
-            }}
-          >
-            home
-          </button>
-        </Link>
       </div>
       {data &&
         data.map((item) => (

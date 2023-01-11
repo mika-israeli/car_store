@@ -33,11 +33,11 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 
 const pages = [
   { name: "Home", icon: <HomeTwoToneIcon />, link: "/home" },
-  {
-    name: "Contact us",
-    icon: <ConnectWithoutContactTwoToneIcon />,
-    link: "/contact",
-  },
+  // {
+  //   name: "Contact us",
+  //   icon: <ConnectWithoutContactTwoToneIcon />,
+  //   link: "/contact",
+  // },
   {
     name: "Product Api",
     icon: <CloudDownloadIcon />,
