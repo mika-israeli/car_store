@@ -2,6 +2,8 @@ const router = require('express').Router();
 const userService = require('../services/userService');
 const { verifyAuth, verifyAuthAdmin } = require('../validation/tokenVerify');
 const bcrypt = require('bcrypt');
+
+
 router.patch('/:id', async (req, res) => {
   if (req.body.password) {
     const hashedpassword = await bcrypt.hash(req.body.password, 10);

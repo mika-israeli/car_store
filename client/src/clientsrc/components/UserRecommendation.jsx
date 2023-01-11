@@ -41,7 +41,7 @@ const UserRecommendation = () => {
         .get(`/orders/find/${User._id}`)
         .then((res) => res.data)
         .then((data) => setOrders(data.sort((a, b) => 0.5 - Math.random())));
-      await fetch('http://localhost:5000/cars')
+      await fetch('http://localhost:8000/cars')
         .then((res) => res.json())
         .then((res) => setdata(res.sort((a, b) => 0.5 - Math.random())))
         .then(() => console.log(data, Orders));

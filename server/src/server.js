@@ -7,7 +7,7 @@ const carData = require("./carsRandomData")
 const model = require("./services/carService")
 const app = express();
 const server = require("http").createServer(app);
-const port = 6000;
+const port = 8000;
 const socket_port = 9000
 dotenv.config();
 const io = require("socket.io")(server, {
