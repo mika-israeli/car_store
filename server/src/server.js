@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 //db connection --------------------------------------------------------------
 
-const uri = process.env.ATLAS_URI;
+const uri = 'mongodb+srv://danielohayon:Daniel0544424836@cluster0.txgjo0e.mongodb.net/daniel_db?retryWrites=true&w=majority';
 mongoose.connect(uri);
 const connection = mongoose.connection;
 app.use(express.urlencoded({ extended: false }));
