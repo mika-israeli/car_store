@@ -40,12 +40,16 @@ const UserRouter = require("./routes/userController");
 const markerRouter = require("./routes/markerController");
 const staisticsRouter = require("./routes/statisticsController");
 const carService = require("./services/carService");
+
+
 app.use("/auth", AuthRouter);
 app.use("/users", UserRouter);
 app.use("/cars", CarRouter);
 app.use("/orders", OrderRouter);
 app.use("/markers", markerRouter);
 app.use("/statistics", staisticsRouter);
+
+
 let AdminService ={
   socket : null,
   connect : false

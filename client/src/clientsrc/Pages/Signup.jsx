@@ -5,39 +5,36 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect, useContext } from "react";
-import AuthContext from "../Context/AuthProvider";
-import axios from "../api/axios";
 import { Alert } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { useNavigate } from "react-router";
-const Signup = () => {
-  const REGISTAR_URL = "auth/register";
+import { useAuth } from "../Context/AuthProvider"
+
+const SignupUser = () => {
+
+  const {signup} = useAuth();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
     const user = {
-      username: data.get("username"),
       email: data.get("email"),
       password: data.get("password"),
     };
+
     try {
-      const response = await axios.post(REGISTAR_URL, JSON.stringify(user), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      return navigate("/login");
+    const response = await signup(user.email,user.password);
+     console.log(response);
+      // return navigate("/login");
     } catch (error) {
-      console.log(error.response.data);
-      seterror(error.response.data.error);
+      console.log(error);
+      seterror(error);
     }
+
   };
   const [user, setuser] = useState({});
   const [error, seterror] = useState("");
@@ -83,4 +80,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupUser;

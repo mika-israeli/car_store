@@ -21,7 +21,7 @@ import Address from '../components/Address';
 import Review from '../components/Review';
 import { useState } from 'react';
 import useCart from '../Hooks/useCart';
-import useAuth from '../Hooks/useAuth';
+import { useAuth } from "../Context/AuthProvider"
 import { axiosPrivate } from '../api/axios';
 import { Navigate, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
@@ -33,7 +33,7 @@ const Checkout = () => {
   const [activeStep, setactiveStep] = useState(0);
   const { User } = useUser();
   const { Cart, setCart } = useCart();
-  const { Auth } = useAuth();
+  const { currentUser } = useAuth();
   const [shippingDetails, setshippingDetails] = useState({ email: User.email });
   const products = Cart.map((product) => {
     return {
@@ -108,7 +108,7 @@ const Checkout = () => {
       address: shippingDetails.address1 + ',' + shippingDetails.city,
     };
 
-    const privateAxios = axiosPrivate(Auth.accessToken);
+    const privateAxios = axiosPrivate(currentUser);
     privateAxios
       .post('/orders/add', { user: User._id, Order: Order })
       .then((res) => {

@@ -11,15 +11,15 @@ import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {axiosPrivate} from "../api/axios"
 import useUser from "../Hooks/useUser"
-import useAuth from "../Hooks/useAuth"
+import { useAuth } from "../clientsrc/Context/AuthProvider"
 import Swal from 'sweetalert2'
 
 const UserSettings = () => {
   
   
   const { User } = useUser();
-  const { Auth } = useAuth();
-  const api = axiosPrivate(Auth.accessToken)
+  const { currentUser } = useAuth();
+  const api = axiosPrivate(currentUser)
   const [userValues, setValues] = React.useState({
     username: '',
     email: '',

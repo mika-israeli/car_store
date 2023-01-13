@@ -12,13 +12,14 @@ import { useState, useEffect, useContext } from "react";
 import axios, { axiosPrivate } from "../api/axios";
 import { Alert } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import useAuth from "../Hooks/useAuth";
+import { useAuth } from "../Context/AuthProvider"
 import useUser from "../Hooks/useUser";
 import jwt_decode from "jwt-decode";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import useCart from "../Hooks/useCart";
-const Login = () => {
-  const { setAuth } = useAuth();
+
+const LoginUSer = () => {
+  const { login } = useAuth();
   const { User, setUser } = useUser();
   const LOGIN_URL = "auth/login";
   const navigate = useNavigate();
@@ -31,30 +32,14 @@ const Login = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const user = {
-      username: data.get("username"),
+      email: data.get("email"),
       password: data.get("password"),
     };
     try {
-      const response = await axios.post(LOGIN_URL, JSON.stringify(user), {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-      const accessToken = response.headers["auth-token"];
-      const isAdmin = response.data;
-      const decoded = jwt_decode(accessToken);
-      const privateAxios = axiosPrivate(accessToken);
-      privateAxios
-        .get(`users/find/${decoded.id}`)
-        .then((res) => setUser(res.data))
-        .catch((err) => console.log(err));
-
-      if (value) {
-        setCart(value);
-      }
-      setAuth({ accessToken, isAdmin });
-      navigate(from, { replace: true });
+     
+    
+     const response = await login(user.email,user.password);
+      response && navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
       seterror(error.response.data);
@@ -91,7 +76,7 @@ const Login = () => {
         )}
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField margin="normal" required fullWidth id="username" label="Username" name="username" autoFocus />
+          <TextField margin="normal" required fullWidth id="email" label="Email" name="email" autoFocus />
           <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
@@ -109,4 +94,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginUSer;

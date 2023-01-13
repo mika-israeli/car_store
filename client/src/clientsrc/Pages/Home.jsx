@@ -1,14 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import { useContext } from "react";
-import UserRecommendation from "../components/UserRecommendation.jsx";
-import AuthContext from "../Context/AuthProvider";
-import FacebookLogin from "react-facebook-login";
-import { FacebookShareButton, FacebookIcon } from "react-share";
 import Call from "../components/call/Call";
 import video from "../../assets/video.mp4";
 const Home = () => {
-  const value = useContext(AuthContext);
 
   return (
     <Box width={"100%"} display="flex" justifyContent={"center"}>

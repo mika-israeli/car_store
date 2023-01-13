@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { axiosPrivate } from '../api/axios';
 import useUser from '../Hooks/useUser';
-import useAuth from '../Hooks/useAuth';
+import { useAuth } from "../Context/AuthProvider"
 import CircularProgress from '@mui/material/CircularProgress';
 import Car from './Car';
 import { Box } from '@mui/system';
@@ -11,8 +11,8 @@ const UserRecommendation = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [data, setdata] = useState([]);
   const { User } = useUser();
-  const { Auth } = useAuth();
-  const privateAxios = axiosPrivate(Auth.accessToken);
+  const { currentUser } = useAuth();
+  const privateAxios = axiosPrivate(currentUser);
   const [Orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const getRecommendationsBasedOnOrders = async () => {

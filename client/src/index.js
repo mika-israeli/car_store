@@ -3,11 +3,11 @@ import React from "react";
 import { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import App from "./clientsrc/App";
 import { AuthProvider } from "./clientsrc/Context/AuthProvider";
 import { CartProvider } from "./clientsrc/Context/CartProvider";
-import { UserProvider } from "./clientsrc/Context/UserProvider";
+import {  UserProvider } from "./clientsrc/Context/UserProvider";
+import ProtectedAdmin from "./clientsrc/Hooks/protectedAdmin";
 import { theme } from "./theme";
 import AdminMain from "./admin/src/App";
 import './styles.css'
@@ -23,7 +23,9 @@ root.render(
               <CssBaseline />
               <Routes>
                 <Route path="/*" element={<App />}></Route>
-                <Route path="/admin/*" element={<AdminMain />} />
+                <Route element={<ProtectedAdmin />}>
+                  <Route path="/admin/*" element={<AdminMain />} />
+                  </Route>
               </Routes>
             </ThemeProvider>
           </CartProvider>

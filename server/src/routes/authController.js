@@ -44,12 +44,16 @@ router.post("/login", userValidationSchema, async (req, res) => {
   if (!user) {
     return res.status(400).send("Username does not exist");
   }
+
+  
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) {
     return res.status(400).send("Invalid password");
   }
+
+
   //create and assign a token
-  const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET);
+  const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, 'dsadsadsadasdsasdsasdsa');
   res.header("auth-token", token).send(user.isAdmin);
 });
 

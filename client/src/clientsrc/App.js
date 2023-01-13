@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Container, CssBaseline } from '@mui/material';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+
 import Navbar from './components/Nav';
 import Home from './Pages/Home';
 import Products from './Pages/Products';

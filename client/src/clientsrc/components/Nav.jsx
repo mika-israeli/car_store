@@ -5,7 +5,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -18,7 +17,7 @@ import DirectionsCarTwoToneIcon from '@mui/icons-material/DirectionsCarTwoTone';
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone';
 import ConnectWithoutContactTwoToneIcon from '@mui/icons-material/ConnectWithoutContactTwoTone';
 import ShopIcon from '@mui/icons-material/Shop';
-import useAuth from '../Hooks/useAuth';
+import { useAuth } from "../Context/AuthProvider"
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import useUser from '../Hooks/useUser';
@@ -55,8 +54,7 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [drawerOpen, setdrawerOpen] = useState(false);
-  const { Auth, setAuth } = useAuth();
-  const { User, setUser } = useUser();
+  const { currentUser,logout,userData } = useAuth();
   const { Cart, setCart } = useCart();
   const navigate = useNavigate();
   const handleOpenNavMenu = (event) => {
@@ -74,10 +72,9 @@ const Navbar = () => {
     setAnchorElUser(null);
   };
   const handleLogOut = () => {
-    localStorage.removeItem('auth');
-    localStorage.removeItem('userInfo');
-    setAuth({ accessToken: null, isAdmin: false });
-    setUser({});
+    logout()
+    //setAuth({ accessToken: null, isAdmin: false });
+    //setUser({});
     toast('Logged out successfully', { type: 'success' });
     navigate('/home');
   };
@@ -190,7 +187,7 @@ const Navbar = () => {
             ))}
             <CarsIconMenu />
           </Box>
-          {Auth.accessToken ? (
+          {currentUser?.email ? (
             <Box
               sx={{
                 flexGrow: 0,
@@ -199,7 +196,7 @@ const Navbar = () => {
                 gap: 3,
               }}
             >
-              {User.isAdmin && (
+              {currentUser && userData?.isAdmin && (
                 <Tooltip title={'Admin dashboard'}>
                   <IconButton
                     onClick={() => navigate('/admin')}
@@ -222,12 +219,12 @@ const Navbar = () => {
               <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
-                    alt={User.username}
+                    alt={currentUser.email}
                     src='/static/images/avatar/2.jpg'
                   />
                 </IconButton>
               </Tooltip>
-              <Typography>welcom {User.username}</Typography>
+              <Typography>welcom {currentUser?.email}</Typography>
               <Menu
                 sx={{ mt: '45px' }}
                 id='menu-appbar'

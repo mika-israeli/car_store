@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { axiosPrivate } from "../api/axios";
 import useUser from "../Hooks/useUser";
-import useAuth from "../Hooks/useAuth";
+import { useAuth } from "../Context/AuthProvider"
 import { Box } from "@mui/system";
 import { List, ListItem, Typography } from "@mui/material";
 import { useEffect } from "react";
@@ -9,12 +9,12 @@ import { useNavigate } from "react-router";
 import Order from "../components/Order";
 const OrderHistory = () => {
   const { User } = useUser();
-  const { Auth } = useAuth();
-  const privateAxios = axiosPrivate(Auth.accessToken);
+  const { currentUser } = useAuth();
+  const privateAxios = axiosPrivate(currentUser);
   const [Orders, setOrders] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!Auth.accessToken) {
+    if (!currentUser) {
       navigate("/login");
     }
     privateAxios

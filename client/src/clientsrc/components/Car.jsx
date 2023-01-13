@@ -43,15 +43,14 @@ const ExpandMore = styled((props) => {
 const Car = ({ item }) => {
   const [expanded, setExpanded] = React.useState(false);
   const { Cart, setCart, addToCart } = useCart();
-  const { User } = useUser();
-  const { Auth } = useAuth();
-  const [value, setvalue] = useLocalStorage(User._id, []);
+  const { currentUser } = useUser();
+  const [value, setvalue] = useLocalStorage(currentUser, []);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   const handleAddCart = () => {
-    console.log(Auth.accessToken != null);
-    if (Auth.accessToken == null) {
+    console.log(currentUser != null);
+    if (currentUser == null) {
       toast.error('Please login to add to cart');
       return;
     }

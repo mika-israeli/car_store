@@ -57,11 +57,14 @@ const getYearlySalesPerMonth = async () => {
   const monthlySales = await orders.aggregate([{ $group: { _id: { $month: "$createdAt" }, total: { $sum: "$amount" } } }, { $sort: { _id: 1 } }]);
   return monthlySales;
 };
+
+
 const getSalesPerMonth = async (month) => {
   const monthlySales = await getYearlySalesPerMonth();
   const salesPerMonth = monthlySales.filter((monthlySales) => monthlySales._id == month);
   return salesPerMonth;
 };
+
 const todaySales = async () => {
   //get the total today's sales
   const today = new Date();
