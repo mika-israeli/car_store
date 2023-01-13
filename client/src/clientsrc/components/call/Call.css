@@ -50,3 +50,19 @@ video{
 	top:1vh;
 	margin:auto;
 }
+
+
+.video-container {
+	display: flex;
+	flex-direction: column;
+	background-color: #282c34;
+	border-radius: 10px;
+	width: 350px;
+  	height: 400px;
+	position: absolute;
+	left:5%;
+	bottom: 5%;
+	color: #fff;
+	cursor:move;
+	visibility: hidden;
+  }

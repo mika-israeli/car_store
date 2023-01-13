@@ -93,7 +93,7 @@ const New = ({ inputs, productRows }) => {
           <div className='left'>
             <img
               src={
-                product.image != null
+                product?.image 
                   ? product.image
                   : 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg'
               }
@@ -107,7 +107,7 @@ const New = ({ inputs, productRows }) => {
                   <label>{input.label}</label>
                   <input
                     type={input.type}
-                    placeholder={product[input.label]}
+                    placeholder={product[input.label]?product[input.label] : null}
                     className={`userInput-${input.label}`}
                   />
                 </div>

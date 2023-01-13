@@ -49,57 +49,111 @@ app.use("/orders", OrderRouter);
 app.use("/markers", markerRouter);
 app.use("/statistics", staisticsRouter);
 
+// Object that represents admin connection .
+let AdminService = {
+  socket:null,
+  connect:false,
+  peerId:null,
+  available:true,
+  name:''
+}
+// connectedUSers= {userId :[socket,userdetails]};
+let connectedUsers ={} 
 
-let AdminService ={
-  socket : null,
-  connect : false
+let adminOnCallWith =null
+
+// chek if socket is exist in connectedUsers then delete the user from dict.
+const removeUserIfExists = (socket)=>{
+  let containes = false;
+  let key_to_delete = null;
+  Object.keys(connectedUsers).forEach(key=>{
+      if(connectedUsers[key].socket.id==socket.id)
+      key_to_delete = key;
+  })
+  if(key_to_delete){
+      delete connectedUsers[key_to_delete]
+  }
+
 }
 io.on('connection', (socket) => {
   console.log("Some socket connected... (http)" + socket.id);
 // service admin is coonect 
-  socket.on('serviceAdminSocket',()=>{
-      AdminService.socket = socket.id;
-      AdminService.connect= true;
-      console.log("Service Admin connected ! ! ! " );
-  });
+socket.on('serviceAdminSocket',(data)=>{
+  AdminService.socket = socket.id;
+  AdminService.peerId = data[0]
+  AdminService.connect= true;
+  AdminService.name=data[1];
+  //console.log("Service Admin connected ! ! ! " );
+  console.log("Info", `Service Admin connected ! ! ! `);
+});
 
-  socket.on("getAdminId" , ()=>{
-      socket.emit("AdminID",AdminService.socket)
-  })
+socket.on("getAdminService" , ()=>{
+  socket.emit("adminService",AdminService)
+  console.log("Admin servvice ")
+})
+socket.on('AdminConnect',(id)=>{
+  //console.log("Admin is connected | Admin id : +" + id)
+  console.log("Info", `Admin is connected | Admin id:  ${id}`)
+})
 
-  socket.on("callUser", (data) => {
-      io.to(data.userToCall).emit("callUser", { signal: data.signalData, from: data.from, name: data.name , socketfrom: socket.id })
-  })
-  socket.on('EndCall',(callId)=>{
-      io.to(callId).emit("EndCalling")
-  })
-  socket.on("answerCall", (data) => {
-      io.to(data.to).emit("callAccepted", data.signal)
-  })
+socket.on("closeVoiceFromUser",()=>{
+  io.to(AdminService.socket).emit("close_call")
+  adminOnCallWith=null;
+})
 
-  socket.on("AdminInUse",(user)=>{
-      io.to(user).emit("AdminNotAvialbe");
-  })
-  socket.on('me',()=>{
-      socket.emit('me', socket.id);
-  })
- 
-  socket.on('userCallSocket', (id)=>{
-      console.log('user Socekt connected ');
-  }) 
-  socket.on('getLiveUsers',()=>{
-      socket.emit('liveSockets',liveSocket)
-  })
+socket.on("closeVoiceFromAdmin" , (p_id_to_send)=>{
+  console.log(p_id_to_send + ' close  ');
+  adminOnCallWith=null;
+  io.to(p_id_to_send).emit("close_call")
+})
+socket.on("onCallWithAdmin",(user_data)=>{
+  // user_data.socketId= socket;
+  adminOnCallWith = socket;
+  io.to(AdminService.socket).emit("onCallWithUser",user_data)
+})
 
-  socket.once('disconnect', function () {
-      socket.broadcast.emit("callEnded")
-      if(AdminService.socket  && AdminService.socket === socket.id){
-          AdminService.socket = null;
-          AdminService.connect = false
-          console.log("Admin service disconnect")
-      }else{
-      console.log('Socket DisCOnnected!!! '); }
-  })
+socket.on("adminNotAvailable" , (p_id_to_send)=>{
+  io.to(p_id_to_send).emit("adminNotAvailable")
+})
+
+socket.on("adminAvailability",(p_isAvailable)=>{
+  AdminService.available = p_isAvailable;
+})
+socket.on('me',(userDetails)=>{
+  connectedUsers[userDetails.userId] = {
+      socket:socket,
+      userDetails:userDetails
+  }
+  socket.emit('me', socket.id);
+})
+
+socket.once('disconnect', function () {
+  if(adminOnCallWith && socket.id === adminOnCallWith.id){
+      io.to(AdminService.socket).emit("user_disconnected");
+      adminOnCallWith=null;
+  }
+  if(AdminService.socket  && AdminService.socket === socket.id)
+  {
+      if(adminOnCallWith){
+          console.log("admin disconnected")
+          io.to(adminOnCallWith.id).emit("admin_disconnected")
+          adminOnCallWith=null;
+      }
+      AdminService.socket = null;
+      AdminService.connect = false
+      AdminService.peerId=null;
+      console.log("Info", `Admin service disconnect`)
+      //console.log("Admin service disconnect")
+  }
+  else
+  {
+      //console.log('Socket Disconnected!!! '); 
+      removeUserIfExists(socket);
+      console.log("Info", `Socket Disconnected!!!`); 
+  }
+})
+
+
 
 });
 

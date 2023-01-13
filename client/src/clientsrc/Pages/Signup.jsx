@@ -12,6 +12,11 @@ import { Alert } from "@mui/material";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { useNavigate } from "react-router";
 import { useAuth } from "../Context/AuthProvider"
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const SignupUser = () => {
 
@@ -24,12 +29,15 @@ const SignupUser = () => {
     const user = {
       email: data.get("email"),
       password: data.get("password"),
+      username:data.get('username'),
+      isAdmin:data.get('isAdmin')?true:false,
     };
 
     try {
-    const response = await signup(user.email,user.password);
+    const response = await signup(user.email,user.password,user.username,user.isAdmin);
      console.log(response);
-      // return navigate("/login");
+    response && navigate("/Home");
+    return;
     } catch (error) {
       console.log(error);
       seterror(error);
@@ -64,6 +72,7 @@ const SignupUser = () => {
           <TextField margin="normal" required fullWidth id="username" label="Username" name="username" autoFocus />
           <TextField margin="normal" required fullWidth id="email" label="Email" name="email" autoComplete="email" />
           <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
+          <FormControlLabel control={<Checkbox name='isAdmin'  defaultChecked />} label="Admin" />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign up
           </Button>

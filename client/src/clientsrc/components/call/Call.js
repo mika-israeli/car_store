@@ -2,268 +2,287 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Button, IconButton } from "@mui/material";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import LinearProgress from "@mui/material/LinearProgress";
-import Peer from "simple-peer";
+import Peer from 'peerjs';
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import PhoneMissedIcon from "@mui/icons-material/PhoneMissed";
-import CircularProgress from "@mui/material/CircularProgress";
 import CallIcon from "@mui/icons-material/Call";
-import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
+import Draggable from 'react-draggable'; 
+
 import "./Call.css";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import { ToastContainer, toast } from "react-toastify";
-import Swal from "sweetalert2";
 import Teams from "../../../assets/teams.mp3";
 import { io } from "socket.io-client";
-import { message } from "antd";
 import "react-toastify/dist/ReactToastify.css";
 import "animate.css";
-const URL = "http://localhost:9000";
-export const socket = io(URL);
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import Stack from '@mui/material/Stack';
+
+//export const socket = io(URL);
+
 
 function Call(props) {
-  const [me, setMe] = useState();
-  const [stream, setStream] = useState(null);
-  const [userStream, setUserStream] = useState(null);
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [caller, setCaller] = useState("");
-  const [callerSignal, setCallerSignal] = useState();
-  const [callAccepted, setCallAccepted] = useState(false);
-  const [callEnded, setCallEnded] = useState(false);
-  const [name, setName] = useState("");
-  const [tryCall, setTryCall] = useState(false);
-  const [AdminAlive, setAdminAlive] = useState(false);
-  const [AdminID, setAdminId] = useState(null);
-  const [value, setValue] = React.useState("autoPlay");
-  const [deltaPosition, setDeltaPosition] = useState({});
-  const [liveSocket, setLiveSocket] = useState({});
-  const [stopDrag, setStopDrag] = useState(true);
-  const [showCantCallingtoast, setShowCantCallingtoast] = useState(false);
 
-  const myVideo = useRef();
-  const userVideo = useRef();
-  const connectionRef = useRef();
+  const [peerId, setPeerId] = useState('');
+  const [PeerConnection,setPeerConnection] = useState(null);
+  const [incomingCall,setIncomingCall] = useState(false);
+  const [tryCall,setTryCall] = useState(false)
+  const[callConnections,setCallConnections] = useState(null)
+  const remoteVideoRef = useRef(null);
+  const currentUserVideoRef = useRef(null);
+  const [onCall,setonCall] = useState(false)
+  const peerInstance = useRef(null);
+  const socketInstance = useRef(null);
+  const nodeRef = useRef(null);
+  const[videoOn,setVideoOn]=useState(true);
+  const[micOn,setMicOn]=useState(true);
 
-  async function getUserMedia() {
-    await navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        setStream(stream);
-        myVideo.current.srcObject = stream;
-        setTryCall(true);
-      })
-      .catch((err) => {
-        console.log(err);
-        showCantgetPermission();
+  const [adminServiceObject, setAdminServiceObject] = useState(null)
+
+
+
+
+  const closeVoice =(p_active = false)=>{
+    console.log("Try " + tryCall);
+    // release media connection
+    if(currentUserVideoRef.current && currentUserVideoRef.current.srcObject){
+      console.log(currentUserVideoRef.current.srcObject.getTracks())
+      currentUserVideoRef.current.srcObject.getTracks().forEach(function(track) {
+        track.stop();
       });
+      currentUserVideoRef.current.srcObject = null;
+    }
+    if(remoteVideoRef.current && remoteVideoRef.current.srcObject){
+      remoteVideoRef.current.srcObject.getTracks().forEach(function(track) {
+        track.stop();
+      });
+      remoteVideoRef.current.srcObject = null;
+    }
+    // send end call to admin 
+    if(p_active && socketInstance.current ){
+      console.log("Emit close");
+      socketInstance.current.emit('closeVoiceFromUser')
+    }else{
+      console.log("dont emit");
+    }
+    setonCall(false)
+    setTryCall(false)
+    //close peer connection
+    callConnections && callConnections.close()
   }
 
+  //PEER JS CONFIGURATION
   useEffect(() => {
-    if (stream && tryCall) {
-      callUser();
+    const iceConfiguration = {
+      iceServers: [
+          {
+              urls: 'stun.l.google.com:19302',
+          }
+      ]
     }
-  }, [stream, tryCall]);
-
-  useEffect(() => {
-    socket.emit("me");
-    socket.on("me", (id) => setMe(id));
-
-    if (window.location.href.includes("admin")) {
-      socket.emit("serviceAdminSocket");
-    } else {
-      setInterval(() => {
-        socket.emit("getAdminId");
-      }, 1000);
-    }
-
-    socket.on("AdminID", (adminId) => {
-      setAdminId(adminId);
-      setAdminAlive(true);
+    var conn = new Peer(iceConfiguration);
+    setPeerConnection(conn)
+    console.log("CONNE", conn)
+    conn.on('open', (id) => {
+        setPeerId(id)        
     });
-    socket.on("AdminNotAvialbe", () => {
-      setAdminAlive(false);
-      showCantCalling();
+    conn.on('connection', function(conn) {
+      console.log("connection")
     });
-    socket.on("EndCall", () => {
-      window.location.reload();
+    conn.on('close', () => {
+      console.log('close peer')
     });
+    conn.on('disconnected', function() {
+       console.log('disconnected peer') 
+    });
+    conn.on('error', () => {
+      console.log('error peer')
+    });
+    // incoming call 
+    conn.on('call',(call) => {
+      setIncomingCall(true)
+      //request user media 
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+          currentUserVideoRef.current.srcObject = stream;
+          // currentUserVideoRef.current.play();
+          call.answer(stream)
+          call.on('stream', function(remoteStream) {
+            remoteVideoRef.current.srcObject = remoteStream
+            remoteVideoRef.current.play();
+          });
+      })
+      .catch((err) => {
+        console.log("cant answer " + err)
+      });
+    })
+    peerInstance.current = conn;
+  }, [])
 
-    socket.on("EndCalling", () => {
-      window.location.reload();
-    });
-    socket.on("callUser", (data) => {
-      if (receivingCall) {
-        socket.emit("AdminInUse", data.socketfrom);
-      } else {
-        getUserMedia();
-        setReceivingCall(true);
-        setCaller(data.from);
-        setName(data.name);
-        setCallerSignal(data.signal);
+  //SOCKET CONFIGURATION
+  useEffect(()=>{
+    if(peerId){
+      const URL = "http://localhost:9000";
+      const socket = io(URL);
+      console.log("socket ", socket)
+      let user_socketID = null;
+      const userIDRandom = Math.random(10).toString();
+      console.log("userID: " + userIDRandom)
+      const userDetails={
+        userId:userIDRandom,
+        userName:'daniel',
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (showCantCallingtoast && !window.location.href.includes("admin")) {
-      showCantCalling();
+      socket.emit('me',userDetails);
+      socket.on('me', (p_id)=>{
+        user_socketID =p_id;
+      })
+      socket.on('connect',()=>{
+        console.log('connection');
+      })
+      socket.on('close_call',()=>{
+        closeVoice(); 
+      })
+      socket.on('adminNotAvailable',()=>{
+        alert("admin not available")
+        setTryCall(false)
+      });
+      socket.on('admin_disconnected',()=>{
+        closeVoice();
+      });
+      socket.on("adminService",(p_admin_service_object)=>{
+        // if admin is connected and available for calling - try calling
+        console.log("adminService")
+        setAdminServiceObject(p_admin_service_object)
+        if(p_admin_service_object.connect && p_admin_service_object.available){
+          const id = p_admin_service_object.peerId;
+          //request user media 
+          navigator.mediaDevices.getUserMedia({video: {width:120}, audio: true})
+            .then(function(stream) {
+              //send caller details to admin.
+              socket.emit('onCallWithAdmin',{name:'Admin',socketId:user_socketID});
+              currentUserVideoRef.current.srcObject = stream;
+              // currentUserVideoRef.current.play();
+              const call = peerInstance.current.call(id, stream)
+              setCallConnections(call)
+              call.on('stream', function(remoteStream) { 
+                setonCall(true)
+                setTryCall(false)
+                remoteVideoRef.current.srcObject = remoteStream
+                  // remoteVideoRef.current.play();
+              })
+            })
+            .catch(function(err) {
+              setTryCall(false)
+              console.log("error: " + err);
+            })
+        }else{
+          setTryCall(false)
+          alert("adminNotAvailable")
+          return ;
+        }
+      })
+      socket.on('disconnect', () => {
+        console.log('disConnect');
+      });
+      socketInstance.current=socket;
+      return ()=>{
+        //Delete all socket events - for each connected site
+        socket.off('me');
+        socket.off('connect');
+        socket.off('disconnect');
+        socket.off('close_call');
+      }
     }
-  }, [showCantCallingtoast]);
+  },[peerId])
 
-  const callUser = () => {
-    // console.log("calling")
-    // console.log(stream)
-    // console.log("Admin Id " + AdminID)
-    if (AdminID !== null && AdminAlive) {
-      setCaller(AdminID);
-      const peer = new Peer({
-        initiator: true,
-        trickle: false,
-        stream,
-      });
-      peer.on("signal", (data) => {
-        socket.emit("callUser", {
-          userToCall: AdminID,
-          signalData: data,
-          from: me,
-          name: name,
-        });
-      });
-      peer.on("stream", (currentStream) => {
-        userVideo.current.srcObject = currentStream;
-      });
-      socket.on("callAccepted", (signal) => {
-        setUserStream(true);
-        setTryCall(false);
-        setCallAccepted(true);
-        console.log("CALL ACCEPTED");
-        peer.signal(signal);
-      });
-      connectionRef.current = peer;
-      console.log(connectionRef.current);
-    } else {
-      setTryCall(false);
-      setShowCantCallingtoast(true);
+  // validate the visibility of video container
+  useEffect(()=>{
+    const videoContainer = document.getElementById('video-container')
+    if(onCall){
+      videoContainer.style.visibility="visible"
+      videoContainer.style.color="white"
+
+    }else{
+      videoContainer.style.visibility="hidden"
     }
-  };
+  },[onCall])
 
-  const answerCall = () => {
-    setCallAccepted(true);
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream: stream,
-    });
-    peer.on("signal", (data) => {
-      socket.emit("answerCall", { signal: data, to: caller });
-    });
-    setUserStream(true);
-    peer.on("stream", (currentStream) => {
-      // console.log("CALL ACCEPTED")
-
-      userVideo.current.srcObject = currentStream;
-    });
-    peer.signal(callerSignal);
-    connectionRef.current = peer;
-    console.log(connectionRef.current);
-  };
-
-  const LeaveCall = () => {
-    socket.emit("EndCall", caller);
-    if (connectionRef.current) {
-      connectionRef.current.destroy();
+useEffect(()=>{
+ if(tryCall){
+    if(socketInstance.current && !onCall){
+      socketInstance.current.emit('getAdminService');
     }
-    setCallEnded(true);
-    setUserStream(null);
-    setCaller(null);
-    setCallAccepted(false);
-    window.location.reload(false);
-  };
-  const showCantCalling = () => {
-    toast.error("Admin Not Availabe!", {
-      toastId: "availabe",
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-    setShowCantCallingtoast(false);
-  };
-  const showCantgetPermission = () => {
-    toast.error("Permission problem!", {
-      toastId: "error",
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
+  } 
+},[tryCall ])
 
-  const ShowPhoneButton = () => {
-    // Call Btn  - 3 different style
-    if (window.location.href.includes("admin")) {
-      // Admin Page - return null
-      return (
-        <div className="call-button">
-          {callAccepted && !callEnded ? (
-            <Button
+  const CallFunction = () => {
+    setTryCall(true)
+  }
+
+
+  const controlUserVideo =  () => {
+    if(currentUserVideoRef.current && currentUserVideoRef.current.srcObject){
+      if(currentUserVideoRef.current.srcObject.getTracks()[0].kind ==='video'){
+        currentUserVideoRef.current.srcObject.getTracks()[0].enabled = !videoOn;
+        setVideoOn(!videoOn)
+      }else{
+        currentUserVideoRef.current.srcObject.getTracks()[1].enabled = !videoOn;
+        setVideoOn(!videoOn)
+      }
+    }
+  }
+  
+  const controlUserMic =  () => {
+    if(currentUserVideoRef.current && currentUserVideoRef.current.srcObject){
+      if(currentUserVideoRef.current.srcObject.getTracks()[0].kind ==='audio'){
+        currentUserVideoRef.current.srcObject.getTracks()[0].enabled = !micOn;
+        setMicOn(!micOn)
+      }else{
+        currentUserVideoRef.current.srcObject.getTracks()[1].enabled = !micOn;
+        setMicOn(!micOn)
+      }
+    }
+  }
+
+
+  return (
+    <div style={{
+      position:'absolute'
+    }}>
+    {tryCall ? 
+      <div
+      onClick={()=>
+        closeVoice(true)
+              }
               style={{
                 position: "fixed",
-                left: "1vw",
-                bottom: "3vh",
+                left: "1.5vw",
+                width: "200px",
+                bottom: "5px",
+                height: "50px",
                 zIndex: "1000000",
-                textTransform: "none",
-                borderRadius: "0px 0px 20px 20px",
-                backgroundColor: "red",
-                color: "white",
-                float: "left",
-                width: "13vw",
+                borderRadius: "10px 10px 10px 10px",
+                backgroundColor: "white",
+                color: "black",
+                cursor: "pointer",
+                textAlign:'center'
               }}
-              variant="contained"
-              color="secondary"
-              onClick={LeaveCall}
             >
-              End Call
-            </Button>
-          ) : null}
-        </div>
-      );
-    } else {
-      //
-
-      return (
-        <div className="call-button">
-          {callAccepted && !callEnded ? (
-            <Button
-              style={{
-                position: "fixed",
-                left: "1vw",
-                bottom: "3vh",
-                zIndex: "1000000",
-                textTransform: "none",
-                borderRadius: "0px 0px 20px 20px",
-                backgroundColor: "red",
-                color: "white",
-                float: "left",
-                width: "13vw",
-              }}
-              variant="contained"
-              color="secondary"
-              onClick={LeaveCall}
-            >
-              End Call
-            </Button>
-          ) : !tryCall ? (
-            <IconButton
+              try Calling - tap to leave
+              <LinearProgress color="inherit" onClick={()=>
+                setTryCall(false)
+              } sx={{
+                width:'90%',
+                position: "relative",
+                left: "5%",
+                bottom:'2px',
+                backgroundColor: "white",
+              }}/>
+            </div> : 
+    <IconButton
               style={{
                 position: "fixed",
                 left: "1vw",
@@ -281,90 +300,196 @@ function Call(props) {
               }}
               color="primary"
               aria-label="call"
-              onClick={() => getUserMedia()}
+              onClick={() => CallFunction()}
             >
               <LocalPhoneIcon style={{ margin: "2px" }} fontSize="medium" />
               Call Admin
             </IconButton>
-          ) : (
+    
+    }
+    
+      <Draggable 
+        nodeRef={nodeRef}
+      >
+        <div
+          ref={nodeRef}
+          className='video-container'
+          id="video-container"
+          >
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width:'100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+          }}>
             <div
-              onClick={LeaveCall}
-              style={{
-                position: "fixed",
-                left: "1.5vw",
-                width: "12vw",
-                bottom: "3vh",
-                height: "2em",
-                zIndex: "1000000",
-                borderRadius: "10px 10px 0px 0px",
-                backgroundColor: "white",
-                color: "#009DDC",
-                float: "left",
-                cursor: "pointer",
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width:'100%',
+              justifyContent: 'center',
+              alignItems: 'center',
               }}
             >
-              try Calling - tap to leave
-              <LinearProgress color="inherit" style={{}} />
+            <h3 style={{
+              color:'white',
+            }}>
+              Me
+            </h3> 
+              <video 
+                 width={'50%'} 
+                height={'50%'} 
+                style={{
+                  margin:'5px',
+                  width:'150px',
+                  height:'150px'
+                }} 
+                ref={currentUserVideoRef} 
+                playsInline
+                autoPlay
+              />
             </div>
-          )}
-        </div>
-      );
-    }
-  };
+            <div 
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width:'100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              }}
+            >
+            <h3 style={{
+              color:'white',
+            }}>
+              {adminServiceObject?.name ? adminServiceObject.name : "Admin"}
+            </h3> 
+              <video 
+                style={{
+                  margin:'5px',
+                  width:'150px',
+                  height:'150px'
+                }} 
+                width={'50%'} 
+                height={'50%'} 
+                playsInline 
+                ref={remoteVideoRef}
+                autoPlay 
+              />
+            </div>
+          </div>
+          <Stack sx={{
+              position:'absolute',
+              bottom:0,
+              width:'100%',
+              backgroundColor:'black',
+              height:'60px',
+          }} 
+          direction="row" 
+          spacing={8}
+          >
+            <Button
+              sx={{
+                position:'relative',
+                left:'20px',
+              }} 
+              variant='text'
+              color='error'
+              onTouchEnd={(e)=>{
+                e.preventDefault();
+                closeVoice(true)                }}
+              onClick={(e)=>{
+                e.preventDefault();
+                closeVoice(true)
+              }}
+            >
+              End 
+            </Button>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent:'center',
+                alignItems: 'center',
+                opacity: 0.8,
+                position: 'relative',
+                bottom:6
+              }}
+            >
+              <IconButton
+                size="small" 
+                aria-label='mute-video'
+                sx={{
+                  color:'white'
+                }}
+                onTouchEnd={(e)=>{
+                  e.preventDefault();
+                  controlUserVideo()
+                }}
+                onClick={(e)=>{
+                  e.preventDefault();
+                  controlUserVideo()
+                }}
+              >
+                {videoOn ? <VideocamIcon  /> : <VideocamOffIcon   />}
+              </IconButton>
+              <p style={{
+                top:'35px',
+                position: 'absolute',
+                fontSize:'0.6rem',
+                fontWeight:'bolder',
+                textAlign: 'center'
+              }}>
+              {videoOn ? 'Stop ' : 'Unstop '}
 
-  //
+              </p>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent:'center',
+                alignItems: 'center',
+                opacity: 0.8,
+                position: 'relative',
+                bottom:6
+                
+              }}
+            >
+              <IconButton
+              sx={{
+                  color:'white',
+                }}
+              size='large' 
+              aria-label='mute'
+              onTouchEnd={(e)=>{
+                e.preventDefault();
+                controlUserMic()                }}
+              onClick={(e)=>{
+                e.preventDefault();
+                controlUserMic()
+              }}
+            >
+              {micOn ? <MicIcon /> : <MicOffIcon />}
 
-  const AnswerButton = () => {
-    if (receivingCall && !callAccepted) {
-      return (
-        <div style={{ cursor: "grab" }} className="AdminAnswer">
-          <audio src={Teams} loop autoPlay />
-          <h1 class="animate__animated animate__swing animate__infinite" style={{ color: "white", opacity: "1" }}>
-            {name} is calling...
-          </h1>
-          <BottomNavigation className="bottom_nav">
-            <BottomNavigationAction onClick={answerCall} icon={<CallIcon color="success" fontSize="medium" />} />
-            <BottomNavigationAction onClick={LeaveCall} icon={<PhoneMissedIcon color="error" fontSize="medium" />} />
-          </BottomNavigation>
-        </div>
-      );
-    } else if (callAccepted && !callEnded) {
-      return (
-        <div className="AdminAnswer" style={{ top: "0", color: "white" }}>
-          <h1> Alive with : {name} </h1>
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
-  };
-  // 		else {
-  // 			return(
-  // 				<div  style={{position: 'fixed',
-  // 				right: '0',
-  // 				top:'30px',
-  // 				zIndex: '2',
-  // 				marginTop: '10rem'}} >
-  // 				{receivingCall && !callAccepted ? (
-  // 				<div className="caller">
-  // 				<h1 >{name} is calling...</h1>
-  // 				<Button variant="contained" color="primary" onClick={answerCall}>
-  // 					Answer
-  // 				</Button>
-  // 			</div> ) : null}
-  // 	</div>)}
-  // }
+            </IconButton>
+              <p style={{
+                top:'35px',
+                position: 'absolute',
+                fontSize:'0.6rem',
+                fontWeight:'bolder',
+                textAlign: 'center'
+              }}>
+              {micOn ? 'Mute' : 'Unmute'}
 
-  return (
-    <>
-      <ToastContainer />
-      <div className="container">
-        <ShowPhoneButton />
-        <AnswerButton />
-        <video autoPlay ref={myVideo} style={{ visibility: callAccepted && !callEnded ? "visible" : "hidden" }} />
-        {callAccepted && !callEnded ? <video playsInline ref={userVideo} autoPlay /> : null}
-      </div>
-    </>
+              </p>
+              
+            </div>
+            </Stack>
+        </div>
+      </Draggable> 
+    
+  </div>
   );
 }
 

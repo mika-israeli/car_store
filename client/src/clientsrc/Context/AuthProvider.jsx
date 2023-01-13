@@ -12,13 +12,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
 
-  async function signup(email, password ,username='dasniel') {
+  async function signup(email, password ,username='dasniel' ,isAdmin=true) {
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
-      await createUserDocument(user, { username });
+      await createUserDocument(user, { username ,isAdmin});
       return true;
     } catch (error) {
       
@@ -68,12 +68,26 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user)
-  
       setLoading(false)
     })
 
     return unsubscribe
   }, [])
+
+  useEffect(  () => {
+    if(currentUser){
+      const setUser = async ()=>{
+        const uid = currentUser.uid;
+        if(uid){
+          let userDoc = await getDocumentByUid(uid);
+          setUSerData(userDoc);
+        }
+      }
+      setUser();
+    }
+  }, [currentUser])
+  
+
 
   const value = {
     currentUser,
