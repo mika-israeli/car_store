@@ -1,11 +1,11 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
 
 const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
   const [User, setUser] = useState({});
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
     if (userInfo) {
       setUser(userInfo);
     }
@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
 
   const handleSetUser = (user) => {
     setUser(user);
-    localStorage.setItem('userInfo', JSON.stringify(user));
+    localStorage.setItem("userInfo", JSON.stringify(user));
   };
 
   return (

@@ -9,33 +9,34 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-} from '@mui/material';
-import React, { useEffect } from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import { palette } from '@mui/system';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { tableCellClasses } from '@mui/material/TableCell';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import useCart from '../Hooks/useCart';
-import toast from 'react-hot-toast';
-import useUser from '../Hooks/useUser';
-import useLocalStorage from '../Hooks/useLocalStorage';
-import useAuth from '../Hooks/useAuth';
+} from "@mui/material";
+import React, { useEffect } from "react";
+import { styled } from "@mui/material/styles";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Collapse from "@mui/material/Collapse";
+import { palette } from "@mui/system";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { tableCellClasses } from "@mui/material/TableCell";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import useCart from "../Hooks/useCart";
+import toast from "react-hot-toast";
+import useUser from "../Hooks/useUser";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import { useAuth } from "../Context/AuthProvider";
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
@@ -43,15 +44,16 @@ const ExpandMore = styled((props) => {
 const Car = ({ item }) => {
   const [expanded, setExpanded] = React.useState(false);
   const { Cart, setCart, addToCart } = useCart();
-  const { currentUser } = useUser();
+  const { currentUser, logout, userData } = useAuth();
+
   const [value, setvalue] = useLocalStorage(currentUser, []);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   const handleAddCart = () => {
-    console.log(currentUser != null);
+    console.log(currentUser);
     if (currentUser == null) {
-      toast.error('Please login to add to cart');
+      toast.error("Please login to add to cart");
       return;
     }
     const newCart = [...Cart, item];
@@ -60,7 +62,7 @@ const Car = ({ item }) => {
     toast(
       `${item.manufacturer} ${item.model} ${item.year} was added to the cart`,
       {
-        icon: '🚗',
+        icon: "🚗",
       }
     );
   };
@@ -72,18 +74,18 @@ const Car = ({ item }) => {
         subheader={`${item.year}  ${parseFloat(item.price).toLocaleString()}$`}
       />
       <CardMedia
-        component='img'
-        height='200'
+        component="img"
+        height="200"
         image={item.image}
-        alt='car image'
+        alt="car image"
       />
       <CardContent>
-        <Typography variant='body2' color='text.secondary'>
+        <Typography variant="body2" color="text.secondary">
           {item.description}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <Tooltip title='Add to cart'>
+        <Tooltip title="Add to cart">
           <IconButton onClick={() => handleAddCart()}>
             <AddShoppingCartIcon />
           </IconButton>
@@ -92,20 +94,20 @@ const Car = ({ item }) => {
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
-          aria-label='show more'
+          aria-label="show more"
         >
-          <Tooltip title='More Info'>
+          <Tooltip title="More Info">
             <ExpandMoreIcon />
           </Tooltip>
         </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout='auto' unmountOnExit>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Table
-            padding='checkbox'
+            padding="checkbox"
             sx={{
               [`& .${tableCellClasses.root}`]: {
-                borderBlockColor: 'rgba(0, 23, 76, 0.4)',
+                borderBlockColor: "rgba(0, 23, 76, 0.4)",
               },
             }}
           >

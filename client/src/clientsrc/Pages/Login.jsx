@@ -12,7 +12,7 @@ import { useState, useEffect, useContext } from "react";
 import axios, { axiosPrivate } from "../api/axios";
 import { Alert } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../Context/AuthProvider"
+import { useAuth } from "../Context/AuthProvider";
 import useUser from "../Hooks/useUser";
 import jwt_decode from "jwt-decode";
 import useLocalStorage from "../Hooks/useLocalStorage";
@@ -36,9 +36,7 @@ const LoginUSer = () => {
       password: data.get("password"),
     };
     try {
-     
-    
-     const response = await login(user.email,user.password);
+      const response = await login(user.email, user.password);
       response && navigate(from, { replace: true });
     } catch (error) {
       console.log(error);
@@ -76,9 +74,31 @@ const LoginUSer = () => {
         )}
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField margin="normal" required fullWidth id="email" label="Email" name="email" autoFocus />
-          <TextField margin="normal" required fullWidth name="password" label="Password" type="password" id="password" autoComplete="current-password" />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Sign In
           </Button>
           <Grid container>

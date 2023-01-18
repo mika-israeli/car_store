@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {
   Box,
@@ -15,20 +15,19 @@ import {
   Button,
   Alert,
   Dialog,
-} from '@mui/material';
-import useUser from '../Hooks/useUser';
-import Address from '../components/Address';
-import Review from '../components/Review';
-import { useState } from 'react';
-import useCart from '../Hooks/useCart';
-import { useAuth } from "../Context/AuthProvider"
-import { axiosPrivate } from '../api/axios';
-import { Navigate, useNavigate } from 'react-router';
-import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
-import UserRecommendation from '../components/UserRecommendation';
-import FacebookLogin from 'react-facebook-login';
-import { FacebookShareButton, FacebookIcon } from 'react-share';
+} from "@mui/material";
+import useUser from "../Hooks/useUser";
+import Address from "../components/Address";
+import Review from "../components/Review";
+import { useState } from "react";
+import useCart from "../Hooks/useCart";
+import { useAuth } from "../Context/AuthProvider";
+import { axiosPrivate } from "../api/axios";
+import { Navigate, useNavigate } from "react-router";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+
+import { FacebookShareButton, FacebookIcon } from "react-share";
 const Checkout = () => {
   const [activeStep, setactiveStep] = useState(0);
   const { User } = useUser();
@@ -37,7 +36,7 @@ const Checkout = () => {
   const [shippingDetails, setshippingDetails] = useState({ email: User.email });
   const products = Cart.map((product) => {
     return {
-      name: product.manufacturer + ' ' + product.model,
+      name: product.manufacturer + " " + product.model,
       desc: product.description,
       year: product.year,
       price: product.price,
@@ -54,7 +53,7 @@ const Checkout = () => {
     ) {
       setactiveStep(activeStep + 1);
     } else {
-      toast.error('Please fill in all the fields');
+      toast.error("Please fill in all the fields");
     }
   };
   const onBack = () => {
@@ -77,20 +76,20 @@ const Checkout = () => {
       case 2:
         return (
           <Box>
-            <Alert severity='success'>
-              Thank you for your order! you can view your order status{' '}
-              <Link to={{ pathname: '/orderhistory' }}>Your orders</Link>
+            <Alert severity="success">
+              Thank you for your order! you can view your order status{" "}
+              <Link to={{ pathname: "/orderhistory" }}>Your orders</Link>
             </Alert>
             <FacebookShareButton
-              url='https://www.facebook.com/Shop-730745804865220/?ref=pages_you_manage?quote=wow'
-              hashtag='#shop'
+              url="https://www.facebook.com/Shop-730745804865220/?ref=pages_you_manage?quote=wow"
+              hashtag="#shop"
             >
               Share this on facebook: <FacebookIcon size={32} round />
             </FacebookShareButton>
           </Box>
         );
       default:
-        return 'Unknown step';
+        return "Unknown step";
     }
   };
 
@@ -103,35 +102,35 @@ const Checkout = () => {
       },
       items: Cart.map((product) => product._id),
       amount: Cart.reduce((acc, product) => acc + product.price, 0),
-      status: 'pending',
+      status: "pending",
       date: new Date(),
-      address: shippingDetails.address1 + ',' + shippingDetails.city,
+      address: shippingDetails.address1 + "," + shippingDetails.city,
     };
 
     const privateAxios = axiosPrivate(currentUser);
     privateAxios
-      .post('/orders/add', { user: User._id, Order: Order })
+      .post("/orders/add", { user: User._id, Order: Order })
       .then((res) => {
         setactiveStep(2);
         setCart([]);
       })
       .catch((err) => {
         console.log(err);
-        toast('Something went wrong, please try again later', {
-          type: 'error',
+        toast("Something went wrong, please try again later", {
+          type: "error",
         });
       });
   };
 
   return (
     <>
-      {Cart.lenght < 0 && <Navigate to='/cars/all' />}
-      <Container component='main' maxWidth='md' sx={{ mb: 4 }}>
+      {Cart.lenght < 0 && <Navigate to="/cars/all" />}
+      <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
         <Paper
-          variant='outlined'
+          variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
-          <Typography component='h1' variant='h4' align='center'>
+          <Typography component="h1" variant="h4" align="center">
             Checkout
           </Typography>
           <Stepper alternativeLabel activeStep={activeStep}>
@@ -147,18 +146,18 @@ const Checkout = () => {
           </Stepper>
           <div>{getStepContent(activeStep)}</div>
           {activeStep === 1 ? (
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Button
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 sx={{ mt: 3 }}
                 onClick={onBack}
               >
                 prev
               </Button>
               <Button
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 sx={{ mt: 3 }}
                 onClick={confirmOrder}
               >
@@ -168,8 +167,8 @@ const Checkout = () => {
           ) : (
             activeStep < 2 && (
               <Button
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 sx={{ mt: 3 }}
                 onClick={onNext}
               >

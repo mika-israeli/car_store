@@ -3,11 +3,6 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new Schema(
   {
-    userid: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
     userDetails: {
       type: Object,
       required: true,
